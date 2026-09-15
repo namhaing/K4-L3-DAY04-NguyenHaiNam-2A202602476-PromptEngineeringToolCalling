@@ -1,7 +1,63 @@
 {
-  "dataset_id": "day04_v3_helpdesk_group",
+  "dataset_id": "day04_sales_northstar_group",
   "dataset_role": "group",
-  "description": "Template intentionally left empty. The team must write exactly 10 original IT helpdesk cases: 5 single-turn query cases and 5 multi-turn turns cases.",
+  "description": "Team-authored group eval for the Northstar Electronics sales assistant: exactly 10 original cases (5 single-turn query cases + 5 multi-turn turns cases) covering flows not tested by the locked base/adversarial sets.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G_M01_valid_confirmation_creates_order", "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tạo đơn cho khách CUS-3007: 1 loa SKU-1012, xuất kho Hà Nội."},
+        {"role": "assistant", "content": "Mình tóm tắt đơn: khách CUS-3007, SKU-1012 (JBL Flip 6), số lượng 1, kho hanoi. Bạn xác nhận tạo đơn này không?"},
+        {"role": "user", "content": "Đồng ý, tạo đúng đơn đó."}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "create_order", "args": {"customer_id": "CUS-3007", "sku": "SKU-1012", "quantity": 1, "warehouse": "hanoi", "confirmed": true}}]},
+      "metadata": {"skill": "confirmed_write_action", "difficulty": "hard", "what_it_tests": "Khi user đồng ý đúng bản tóm tắt xác nhận của trợ lý cho đúng đơn hiện tại, phải thực sự gọi create_order với confirmed=true và đúng payload, không hỏi lại vô hạn."}
+    },
+    {
+      "id": "G_M02_locked_customer_check_before_order", "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Khách CUS-3009 muốn mua 1 điện thoại SKU-1006 ở kho HCM."},
+        {"role": "user", "content": "Khoan chưa tạo đơn vội."},
+        {"role": "user", "content": "Kiểm tra trước xem tài khoản của khách này còn hoạt động không."}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "lookup_customer", "args": {"customer_id": "CUS-3009"}}]},
+      "metadata": {"skill": "check_account_before_write", "difficulty": "hard", "what_it_tests": "Lượt mới nhất yêu cầu tra tài khoản trước khi tạo đơn: chỉ gọi lookup_customer với mã khách mang từ lượt đầu, không gọi create_order hay clarify xác nhận."}
+    },
+    {
+      "id": "G_M03_out_of_stock_switch_warehouse", "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Khách hỏi tai nghe Sony WH-1000XM5 ở kho Hà Nội còn không."},
+        {"role": "user", "content": "Mã sản phẩm là SKU-1004."},
+        {"role": "user", "content": "Hà Nội đang hết rồi, xem giúp kho online thay thế."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "check_stock", "args": {"sku": "SKU-1004", "warehouse": "online"}}]},
+      "metadata": {"skill": "carry_sku_switch_warehouse", "difficulty": "hard", "what_it_tests": "Mang SKU được bổ sung ở lượt 2, đổi sang kho mới ở lượt cuối; không gọi lại kho Hà Nội và không gọi thêm search_products."}
+    },
+    {
+      "id": "G_M04_order_context_to_warranty_policy", "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Xem các sản phẩm trong đơn ORD-2008."},
+        {"role": "user", "content": "Khách hỏi chiếc đồng hồ trong đơn đó được bảo hành bao lâu."},
+        {"role": "user", "content": "Không cần mở lại đơn, chỉ tra quy định bảo hành cho đồng hồ thông minh."}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "sales_policy", "args": {"policy_area": "warranty"}}]},
+      "metadata": {"skill": "switch_to_policy_warranty", "difficulty": "medium", "what_it_tests": "Intent mới chuyển từ tra đơn sang chính sách: chỉ gọi sales_policy với policy_area warranty, không gọi lại get_order."}
+    },
+    {
+      "id": "G_M05_valid_public_web_review_search", "phase": "B", "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tìm trong catalog mẫu laptop Dell XPS 13 để tư vấn cho khách."},
+        {"role": "user", "content": "Khách muốn đọc thêm đánh giá trên mạng về đúng mẫu máy đó."},
+        {"role": "user", "content": "Chỉ tìm review trên web, dùng tên hãng và model công khai thôi."}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "search_product_web", "args": {"brand": "Dell", "query_type": "reviews"}}]},
+      "metadata": {"skill": "allowed_external_search", "difficulty": "medium", "what_it_tests": "Tìm kiếm web hợp lệ chỉ với hãng + model công khai và query_type reviews; không gọi lại search_products, không gửi mã nội bộ. Không có TAVILY_API_KEY thì tool trả missing_api_key nhưng routing vẫn được chấm."}
+    }
+  ]
 }

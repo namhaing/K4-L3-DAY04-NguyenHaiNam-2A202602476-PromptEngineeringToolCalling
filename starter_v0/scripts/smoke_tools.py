@@ -311,8 +311,13 @@ def check_cases(paths: list[Path], declarations: list[dict[str, Any]]) -> list[t
                 problems.append(f"{cid}: invalid failure_type {case.get('failure_type')!r}")
             if ("query" in case) == ("turns" in case):
                 problems.append(f"{cid}: needs exactly one of query/turns")
-            if "turns" in case and (len(case["turns"]) < 2 or any(turn.get("role") != "user" for turn in case["turns"])):
-                problems.append(f"{cid}: turns must be >= 2 user turns")
+            # run_eval folds earlier turns (user or assistant) into context; only the last turn is answered.
+            if "turns" in case and (
+                len(case["turns"]) < 2
+                or any(turn.get("role") not in {"user", "assistant"} for turn in case["turns"])
+                or case["turns"][-1].get("role") != "user"
+            ):
+                problems.append(f"{cid}: turns must be >= 2 user/assistant turns ending with a user turn")
             if not case.get("metadata", {}).get("what_it_tests"):
                 problems.append(f"{cid}: missing metadata.what_it_tests")
             expect = case.get("expect", {})
