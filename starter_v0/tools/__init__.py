@@ -15,11 +15,15 @@ from .policy.tool import search_company_policy
 from .search_kb.tool import search_kb
 from .search_device_info.tool import search_device_info
 
-# Sales assistant tools (Northstar Electronics). Import a teammate's tool only
-# after its folder is pushed; a missing module breaks every entry point.
+# Sales assistant tools (Northstar Electronics). Import a tool only after its
+# folder exists; a missing module breaks every entry point.
 from .check_stock.tool import check_stock
 from .create_order.tool import create_order
+from .format_quote.tool import format_quote
 from .get_order.tool import get_order
+from .lookup_customer.tool import lookup_customer
+from .sales_policy.tool import search_sales_policy
+from .search_product_web.tool import search_product_web
 from .search_products.tool import search_products
 
 
@@ -37,12 +41,15 @@ TOOL_FUNCTIONS = {
     "format_incident_report": format_incident_report,
     "policy": search_company_policy,
     "create_ticket": create_ticket,
-    # Sales assistant tools. Pending: lookup_customer (A); sales_policy,
-    # format_quote, search_product_web (D).
+    # Sales assistant tools.
     "search_products": search_products,
     "check_stock": check_stock,
     "get_order": get_order,
+    "lookup_customer": lookup_customer,
+    "sales_policy": search_sales_policy,
+    "format_quote": format_quote,
     "create_order": create_order,
+    "search_product_web": search_product_web,
 }
 
 
