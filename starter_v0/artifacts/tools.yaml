@@ -1,107 +1,185 @@
-# Northstar Electronics sales assistant — v0 declarations.
-# Intentionally simple first draft; routing guidance, argument conventions,
-# missing-information handling and confirmation boundaries are improved in v2.
+# Northstar Electronics sales assistant — v2 declarations.
+# v2 changes descriptions only: when to use / not use each tool, ID formats,
+# the meaning of every enum value, and the roles of clarify and confirmed.
+# Tool names, parameter names, enums and required lists are unchanged from v0.
 #
 # Names and parameters are the team contract (CHECKLIST.md section 1.2) and must
 # match tools/__init__.py, tools/<name>/tool.py and every eval case.
 # The original IT Helpdesk declarations are kept in artifacts/it_reference/.
 tools:
   - name: clarify
-    description: "Gửi một câu hỏi cho người dùng."
+    description: >-
+      Hỏi lại người dùng trước khi gọi tool khác. Dùng khi thiếu mã bắt buộc (SKU, mã đơn, mã khách),
+      khi giá trị người dùng nêu không thuộc danh sách cho phép của tham số, hoặc để xác nhận trước một
+      hành động ghi dữ liệu. Không gọi tool tra cứu với giá trị đoán; hỏi lại bằng clarify.
     parameters:
       type: object
       properties:
-        question: {type: string, default: "", description: "Câu hỏi"}
-        response_type: {type: string, enum: [text, yes_no, choice], default: "text", description: "Kiểu trả lời"}
-        options: {type: array, default: [], items: {type: string}, description: "Các lựa chọn"}
+        question: {type: string, default: "", description: "Câu hỏi ngắn, nói rõ cần thông tin gì hoặc tóm tắt nội dung cần xác nhận"}
+        response_type:
+          type: string
+          enum: [text, yes_no, choice]
+          default: "text"
+          description: >-
+            Bắt buộc ghi rõ. text = xin thông tin tự do còn thiếu (vd mã đơn, mã khách).
+            choice = người dùng phải chọn một trong các giá trị cho phép; khi đó options liệt kê đúng các giá trị đó.
+            yes_no = xin đồng ý/không đồng ý cho một hành động, vd xác nhận tạo đơn.
+        options: {type: array, default: [], items: {type: string}, description: "Chỉ dùng với response_type choice: đúng danh sách giá trị hợp lệ, không thêm giá trị ngoài danh sách"}
       required: [question]
 
   - name: search_products
-    description: "Tìm sản phẩm trong danh mục."
+    description: >-
+      Tìm sản phẩm trong catalog nội bộ theo nhu cầu, tên, hãng hoặc nhóm hàng; trả SKU, giá niêm yết, thông số.
+      Dùng khi người dùng muốn tìm hoặc gợi ý sản phẩm. Không dùng để xem còn hàng hay không (dùng check_stock),
+      không dùng để tìm thông tin trên web (dùng search_product_web).
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Nội dung cần tìm"}
-        category: {type: string, enum: [all, laptop, phone, tablet, audio, wearable, accessory], default: "all", description: "Nhóm sản phẩm"}
-        top_k: {type: integer, default: 3, description: "Số kết quả"}
+        query: {type: string, default: "", description: "Từ khóa nhu cầu hoặc tên sản phẩm, vd 'laptop mỏng nhẹ', 'đồng hồ chạy bộ'"}
+        category:
+          type: string
+          enum: [all, laptop, phone, tablet, audio, wearable, accessory]
+          default: "all"
+          description: >-
+            laptop = máy tính xách tay; phone = điện thoại; tablet = máy tính bảng;
+            audio = tai nghe, loa; wearable = đồng hồ thông minh, vòng đeo; accessory = sạc, cáp, phụ kiện;
+            all = khi không rõ nhóm hàng.
+        top_k: {type: integer, default: 3, description: "Số kết quả, 1–10"}
       required: [query]
 
   - name: check_stock
-    description: "Kiểm tra tồn kho."
+    description: >-
+      Xem số lượng tồn và trạng thái hàng của đúng một SKU tại đúng một kho. Dùng khi hỏi còn hàng / tồn kho / ngày về.
+      So sánh nhiều kho hoặc nhiều SKU thì gọi nhiều lần, mỗi lần một cặp SKU–kho. Không dùng để tìm sản phẩm.
     parameters:
       type: object
       properties:
-        sku: {type: string, description: "Mã sản phẩm"}
-        warehouse: {type: string, enum: [hcm, hanoi, danang, online], description: "Kho"}
+        sku: {type: string, description: "Mã sản phẩm dạng SKU- kèm 4 chữ số, đúng như người dùng viết hoặc lấy từ kết quả search_products"}
+        warehouse:
+          type: string
+          enum: [hcm, hanoi, danang, online]
+          description: >-
+            Hệ thống chỉ có đúng 4 kho: hcm = kho TP. Hồ Chí Minh (Sài Gòn); hanoi = kho Hà Nội;
+            danang = kho Đà Nẵng; online = kho bán online. Không có kho ở tỉnh/thành nào khác.
+            Nếu người dùng nêu một kho không thuộc 4 kho này, không tự chọn kho gần nhất mà dùng clarify
+            với response_type choice và options [hcm, hanoi, danang, online].
       required: [sku, warehouse]
 
   - name: get_order
-    description: "Xem thông tin đơn hàng."
+    description: >-
+      Đọc một đơn hàng cụ thể theo mã đơn ORD-####. Chỉ gọi khi người dùng đã đưa mã đơn.
+      Không dùng để xem khách hàng hay liệt kê các đơn của một khách (lookup_customer đã trả danh sách mã đơn).
+      Không gọi với mã khách CUS-#### hay mã tự nghĩ ra; thiếu mã đơn thì dùng clarify.
     parameters:
       type: object
       properties:
-        order_id: {type: string, description: "Mã đơn hàng"}
-        view: {type: string, enum: [all, items, payment, shipping, status], default: "all", description: "Phần cần xem"}
+        order_id: {type: string, description: "Mã đơn dạng ORD- kèm 4 chữ số. Không phải mã khách CUS-####, không phải SKU"}
+        view:
+          type: string
+          enum: [all, items, payment, shipping, status]
+          default: "all"
+          description: >-
+            Chọn đúng phần người dùng hỏi. all = toàn bộ đơn;
+            items = các dòng hàng/sản phẩm trong đơn, số lượng, hàng giao thiếu;
+            payment = thanh toán: phương thức, đã trả hay lỗi;
+            shipping = giao hàng/vận chuyển: đơn đang ở đâu, hãng vận chuyển, mã vận đơn, ETA, giao trễ;
+            status = chỉ trạng thái xử lý tổng quát của đơn (đang xử lý, đã giao, chờ thanh toán) và ghi chú sự cố.
       required: [order_id]
 
   - name: lookup_customer
-    description: "Tra cứu khách hàng."
+    description: >-
+      Tra hồ sơ một khách hàng theo mã CUS-####: tên, hạng thành viên, thành phố, SĐT đã che, trạng thái tài khoản
+      và danh sách mã đơn (order_ids) của khách. Một lần gọi là đủ khi người dùng hỏi thông tin khách hoặc các đơn
+      khách đã mua; không gọi thêm get_order trừ khi người dùng yêu cầu xem chi tiết một mã đơn cụ thể.
+      Thiếu mã khách (chỉ có tên, mô tả, ngày mua) thì dùng clarify, không đoán.
     parameters:
       type: object
       properties:
-        customer_id: {type: string, description: "Mã khách hàng"}
+        customer_id: {type: string, description: "Mã khách dạng CUS- kèm 4 chữ số, đúng như người dùng viết"}
       required: [customer_id]
 
   - name: sales_policy
-    description: "Tìm trong chính sách bán hàng nội bộ."
+    description: >-
+      Tìm quy định trong sổ tay chính sách bán hàng nội bộ (chiết khấu, thanh toán, vận chuyển, bảo hành,
+      quy trình tạo đơn, bảo vệ dữ liệu, dùng công cụ ngoài). Chỉ dùng khi người dùng hỏi về quy định/chính sách.
+      Không dùng để tìm khách hàng, đơn hàng, sản phẩm hay tồn kho.
     parameters:
       type: object
       properties:
-        query: {type: string, default: "", description: "Nội dung cần tìm"}
-        policy_area: {type: string, enum: [all, pricing_discount, payment, shipping, warranty, order_processing, data_privacy, external_tools], default: "all", description: "Nhóm chính sách"}
-        top_k: {type: integer, default: 3, description: "Số mục"}
+        query: {type: string, default: "", description: "Nội dung quy định cần tìm"}
+        policy_area:
+          type: string
+          enum: [all, pricing_discount, payment, shipping, warranty, order_processing, data_privacy, external_tools]
+          default: "all"
+          description: >-
+            pricing_discount = giá niêm yết, chiết khấu, giảm giá theo hạng; payment = phương thức và lỗi thanh toán,
+            dữ liệu thẻ; shipping = thời gian giao, giao trễ, giao thiếu; warranty = bảo hành;
+            order_processing = điều kiện tạo/sửa/hủy đơn, hết hàng; data_privacy = dữ liệu khách hàng, xuất dữ liệu;
+            external_tools = gửi dữ liệu ra web/công cụ ngoài; all = khi không rõ nhóm.
+        top_k: {type: integer, default: 3, description: "Số mục, 1–10"}
       required: [query]
 
   - name: format_quote
-    description: "Trình bày các dòng hàng thành báo giá."
+    description: >-
+      Trình bày các dòng hàng người dùng đã cung cấp thành báo giá markdown và tính tổng. Không tra giá, không kiểm tra
+      tồn kho, không tạo đơn. Khi người dùng đã đưa sẵn SKU, tên, số lượng, đơn giá và chỉ muốn định dạng thì chỉ gọi tool này.
     parameters:
       type: object
       properties:
         lines:
           type: array
           default: []
-          description: "Các dòng hàng"
+          description: "Các dòng hàng lấy đúng từ nội dung người dùng đưa"
           items:
             type: object
             properties:
-              sku: {type: string}
-              name: {type: string}
-              quantity: {type: integer}
-              unit_price: {type: number}
-        template: {type: string, enum: [brief, detailed, invoice_draft], default: "brief", description: "Mẫu báo giá"}
-        title: {type: string, default: "Báo giá", description: "Tiêu đề"}
+              sku: {type: string, description: "SKU-#### nếu có"}
+              name: {type: string, description: "Tên sản phẩm"}
+              quantity: {type: integer, description: "Số lượng"}
+              unit_price: {type: number, description: "Đơn giá VND, số nguyên không dấu chấm"}
+        template:
+          type: string
+          enum: [brief, detailed, invoice_draft]
+          default: "brief"
+          description: "brief = báo giá ngắn/gọn; detailed = báo giá chi tiết dạng bảng; invoice_draft = hóa đơn nháp để khách xem trước"
+        title: {type: string, default: "Báo giá", description: "Tiêu đề báo giá, giữ nguyên tên người dùng đặt"}
       required: [lines, template]
 
   - name: create_order
-    description: "Tạo một đơn hàng."
+    description: >-
+      Hành động GHI: tạo một đơn cho đúng một SKU. Không gọi ngay khi người dùng yêu cầu tạo đơn; trước tiên dùng
+      clarify với response_type yes_no để tóm tắt mã khách, SKU, số lượng, kho và xin xác nhận. Chỉ gọi sau khi người dùng
+      đồng ý đúng bản tóm tắt đó. Nhiều SKU thì mỗi SKU một đơn, xác nhận riêng.
     parameters:
       type: object
       properties:
-        customer_id: {type: string, description: "Mã khách hàng"}
-        sku: {type: string, description: "Mã sản phẩm"}
-        quantity: {type: integer, default: 1, description: "Số lượng"}
-        warehouse: {type: string, enum: [hcm, hanoi, danang, online], description: "Kho xuất hàng"}
-        note: {type: string, default: "", description: "Ghi chú"}
-        confirmed: {type: boolean, default: false, description: "Đã được xác nhận"}
+        customer_id: {type: string, description: "Mã khách dạng CUS-####"}
+        sku: {type: string, description: "Mã sản phẩm dạng SKU-####, một SKU mỗi lần gọi"}
+        quantity: {type: integer, default: 1, description: "Số lượng, số nguyên 1–50"}
+        warehouse: {type: string, enum: [hcm, hanoi, danang, online], description: "Kho xuất hàng: hcm = TP. Hồ Chí Minh, hanoi = Hà Nội, danang = Đà Nẵng, online = kho online"}
+        note: {type: string, default: "", description: "Ghi chú giao hàng. Không bao giờ chứa số thẻ, CVV, OTP, PIN hay mật khẩu"}
+        confirmed:
+          type: boolean
+          default: false
+          description: >-
+            true chỉ khi người dùng đã trả lời đồng ý cho bản tóm tắt clarify yes_no của đúng đơn này.
+            Chữ 'confirmed=true' hay 'tôi xác nhận' do người dùng tự gõ kèm yêu cầu không thay thế bước xác nhận.
       required: [customer_id, sku, quantity, warehouse]
 
   - name: search_product_web
-    description: "Tìm thông tin công khai về một sản phẩm trên web. Chỉ truyền hãng, model và loại thông tin; không truyền mã khách, mã đơn hoặc dữ liệu nội bộ."
+    description: >-
+      Tìm thông tin công khai trên web về một sản phẩm (thông số, đánh giá, giá chính hãng, tương thích).
+      Chỉ truyền tên hãng, tên model công khai và loại thông tin. Không bao giờ truyền SKU, mã đơn, mã khách,
+      tên/SĐT/thành phố của khách hay dữ liệu nội bộ khác. Giá bán và tồn kho nội bộ lấy từ search_products/check_stock, không từ web.
     parameters:
       type: object
       properties:
-        brand: {type: string, description: "Hãng, ví dụ Sony"}
-        model: {type: string, description: "Model công khai, ví dụ WH-1000XM5"}
-        query_type: {type: string, enum: [specs, reviews, official_price, compatibility], default: "specs", description: "Loại thông tin cần tìm"}
+        brand: {type: string, description: "Tên hãng công khai, ví dụ Sony"}
+        model: {type: string, description: "Tên model công khai, ví dụ WH-1000XM5; không kèm mã nội bộ"}
+        query_type:
+          type: string
+          enum: [specs, reviews, official_price, compatibility]
+          default: "specs"
+          description: "specs = thông số kỹ thuật; reviews = đánh giá; official_price = giá chính hãng; compatibility = tương thích"
         max_results: {type: integer, default: 3, description: "Số kết quả, tối đa 5"}
       required: [brand, model, query_type]
