@@ -1,0 +1,153 @@
+{
+  "snapshot_at": "2026-09-14T09:00:00+07:00",
+  "currency": "VND",
+  "orders": [
+    {
+      "order_id": "ORD-2001",
+      "customer_id": "CUS-3001",
+      "created_at": "2026-09-08T10:15:00+07:00",
+      "channel": "online",
+      "warehouse": "online",
+      "status": "delivered",
+      "items": [
+        {"sku": "SKU-1007", "quantity": 1, "unit_price_vnd": 2490000}
+      ],
+      "subtotal_vnd": 2490000,
+      "discount_vnd": 0,
+      "shipping_fee_vnd": 30000,
+      "total_vnd": 2520000,
+      "payment": {"method": "card", "status": "paid", "paid_at": "2026-09-08T10:16:00+07:00", "failure_reason": null},
+      "shipping": {"carrier": "Northstar Express", "status": "delivered", "city": "Ho Chi Minh City", "eta": "2026-09-10", "delivered_at": "2026-09-10T15:20:00+07:00", "delay_reason": null},
+      "issues": []
+    },
+    {
+      "order_id": "ORD-2002",
+      "customer_id": "CUS-3002",
+      "created_at": "2026-09-13T19:40:00+07:00",
+      "channel": "online",
+      "warehouse": "hanoi",
+      "status": "packing",
+      "items": [
+        {"sku": "SKU-1003", "quantity": 1, "unit_price_vnd": 18990000}
+      ],
+      "subtotal_vnd": 18990000,
+      "discount_vnd": 500000,
+      "shipping_fee_vnd": 0,
+      "total_vnd": 18490000,
+      "payment": {"method": "bank_transfer", "status": "paid", "paid_at": "2026-09-13T19:55:00+07:00", "failure_reason": null},
+      "shipping": {"carrier": "Northstar Express", "status": "not_shipped", "city": "Ha Noi", "eta": "2026-09-15", "delivered_at": null, "delay_reason": null},
+      "issues": []
+    },
+    {
+      "order_id": "ORD-2003",
+      "customer_id": "CUS-3003",
+      "created_at": "2026-09-12T14:05:00+07:00",
+      "channel": "store",
+      "warehouse": "hcm",
+      "status": "shipping",
+      "items": [
+        {"sku": "SKU-1005", "quantity": 1, "unit_price_vnd": 16990000},
+        {"sku": "SKU-1008", "quantity": 1, "unit_price_vnd": 890000}
+      ],
+      "subtotal_vnd": 17880000,
+      "discount_vnd": 0,
+      "shipping_fee_vnd": 0,
+      "total_vnd": 17880000,
+      "payment": {"method": "cod", "status": "pending", "paid_at": null, "failure_reason": null},
+      "shipping": {"carrier": "Northstar Express", "status": "in_transit", "city": "Ho Chi Minh City", "eta": "2026-09-15", "delivered_at": null, "delay_reason": null},
+      "issues": []
+    },
+    {
+      "order_id": "ORD-2004",
+      "customer_id": "CUS-3003",
+      "created_at": "2026-09-07T09:30:00+07:00",
+      "channel": "online",
+      "warehouse": "hanoi",
+      "status": "shipping",
+      "items": [
+        {"sku": "SKU-1001", "quantity": 1, "unit_price_vnd": 25990000}
+      ],
+      "subtotal_vnd": 25990000,
+      "discount_vnd": 0,
+      "shipping_fee_vnd": 0,
+      "total_vnd": 25990000,
+      "payment": {"method": "card", "status": "paid", "paid_at": "2026-09-07T09:31:00+07:00", "failure_reason": null},
+      "shipping": {"carrier": "Northstar Express", "status": "delayed", "city": "Ho Chi Minh City", "eta": "2026-09-16", "delivered_at": null, "delay_reason": "Hàng kẹt tại kho trung chuyển; ETA ban đầu 2026-09-11"},
+      "issues": ["shipping_delayed"]
+    },
+    {
+      "order_id": "ORD-2005",
+      "customer_id": "CUS-3004",
+      "created_at": "2026-09-13T21:10:00+07:00",
+      "channel": "online",
+      "warehouse": "danang",
+      "status": "pending_payment",
+      "items": [
+        {"sku": "SKU-1009", "quantity": 1, "unit_price_vnd": 10490000}
+      ],
+      "subtotal_vnd": 10490000,
+      "discount_vnd": 0,
+      "shipping_fee_vnd": 0,
+      "total_vnd": 10490000,
+      "payment": {"method": "card", "status": "failed", "paid_at": null, "failure_reason": "issuer_declined"},
+      "shipping": {"carrier": null, "status": "not_shipped", "city": "Da Nang", "eta": null, "delivered_at": null, "delay_reason": null},
+      "issues": ["payment_failed"]
+    },
+    {
+      "order_id": "ORD-2006",
+      "customer_id": "CUS-3005",
+      "created_at": "2026-09-09T11:00:00+07:00",
+      "channel": "online",
+      "warehouse": "online",
+      "status": "delivered",
+      "items": [
+        {"sku": "SKU-1002", "quantity": 1, "unit_price_vnd": 27490000},
+        {"sku": "SKU-1008", "quantity": 1, "unit_price_vnd": 890000}
+      ],
+      "subtotal_vnd": 28380000,
+      "discount_vnd": 1000000,
+      "shipping_fee_vnd": 0,
+      "total_vnd": 27380000,
+      "payment": {"method": "ewallet", "status": "paid", "paid_at": "2026-09-09T11:02:00+07:00", "failure_reason": null},
+      "shipping": {"carrier": "Northstar Express", "status": "delivered", "city": "Ha Noi", "eta": "2026-09-12", "delivered_at": "2026-09-12T10:45:00+07:00", "delay_reason": null},
+      "issues": ["customer_reported_missing_item: SKU-1008"]
+    },
+    {
+      "order_id": "ORD-2007",
+      "customer_id": "CUS-3006",
+      "created_at": "2026-09-11T16:25:00+07:00",
+      "channel": "online",
+      "warehouse": "hcm",
+      "status": "shipping",
+      "items": [
+        {"sku": "SKU-1006", "quantity": 2, "unit_price_vnd": 5290000}
+      ],
+      "subtotal_vnd": 10580000,
+      "discount_vnd": 0,
+      "shipping_fee_vnd": 0,
+      "total_vnd": 10580000,
+      "payment": {"method": "ewallet", "status": "refund_pending", "paid_at": "2026-09-11T16:26:00+07:00", "failure_reason": "duplicate_charge_detected"},
+      "shipping": {"carrier": "Northstar Express", "status": "in_transit", "city": "Can Tho", "eta": "2026-09-15", "delivered_at": null, "delay_reason": null},
+      "issues": ["duplicate_charge_refund_pending"]
+    },
+    {
+      "order_id": "ORD-2008",
+      "customer_id": "CUS-3007",
+      "created_at": "2026-08-22T13:50:00+07:00",
+      "channel": "store",
+      "warehouse": "hcm",
+      "status": "delivered",
+      "items": [
+        {"sku": "SKU-1004", "quantity": 1, "unit_price_vnd": 7490000},
+        {"sku": "SKU-1011", "quantity": 1, "unit_price_vnd": 24990000}
+      ],
+      "subtotal_vnd": 32480000,
+      "discount_vnd": 0,
+      "shipping_fee_vnd": 0,
+      "total_vnd": 32480000,
+      "payment": {"method": "bank_transfer", "status": "paid", "paid_at": "2026-08-22T13:55:00+07:00", "failure_reason": null},
+      "shipping": {"carrier": "Northstar Express", "status": "delivered", "city": "Ho Chi Minh City", "eta": "2026-08-25", "delivered_at": "2026-08-25T09:10:00+07:00", "delay_reason": null},
+      "issues": []
+    }
+  ]
+}

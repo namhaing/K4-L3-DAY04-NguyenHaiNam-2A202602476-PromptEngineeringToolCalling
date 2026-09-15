@@ -1,0 +1,15 @@
+{
+  "snapshot_at": "2026-09-14T09:00:00+07:00",
+  "customers": [
+    {"customer_id": "CUS-3001", "display_name": "Minh Anh Tran", "tier": "gold", "city": "Ho Chi Minh City", "phone_masked": "09xx xxx 101", "account_status": "active", "marketing_consent": true, "joined_at": "2023-03-12", "order_ids": ["ORD-2001"]},
+    {"customer_id": "CUS-3002", "display_name": "Quoc Bao Le", "tier": "gold", "city": "Ha Noi", "phone_masked": "09xx xxx 202", "account_status": "active", "marketing_consent": false, "joined_at": "2022-11-05", "order_ids": ["ORD-2002"]},
+    {"customer_id": "CUS-3003", "display_name": "Thu Ha Pham", "tier": "silver", "city": "Ho Chi Minh City", "phone_masked": "09xx xxx 303", "account_status": "active", "marketing_consent": true, "joined_at": "2024-01-20", "order_ids": ["ORD-2003", "ORD-2004"]},
+    {"customer_id": "CUS-3004", "display_name": "Duc Huy Vo", "tier": "member", "city": "Da Nang", "phone_masked": "09xx xxx 404", "account_status": "active", "marketing_consent": false, "joined_at": "2025-06-02", "order_ids": ["ORD-2005"]},
+    {"customer_id": "CUS-3005", "display_name": "Lan Chi Nguyen", "tier": "platinum", "city": "Ha Noi", "phone_masked": "09xx xxx 505", "account_status": "active", "marketing_consent": true, "joined_at": "2021-08-15", "order_ids": ["ORD-2006"]},
+    {"customer_id": "CUS-3006", "display_name": "Gia Khang Do", "tier": "silver", "city": "Can Tho", "phone_masked": "09xx xxx 606", "account_status": "active", "marketing_consent": true, "joined_at": "2024-09-09", "order_ids": ["ORD-2007"]},
+    {"customer_id": "CUS-3007", "display_name": "Hoai Nam Bui", "tier": "member", "city": "Ho Chi Minh City", "phone_masked": "09xx xxx 707", "account_status": "active", "marketing_consent": false, "joined_at": "2025-02-28", "order_ids": ["ORD-2008"]},
+    {"customer_id": "CUS-3008", "display_name": "Phuong Thao Dang", "tier": "silver", "city": "Hai Phong", "phone_masked": "09xx xxx 808", "account_status": "locked", "marketing_consent": false, "joined_at": "2023-07-11", "order_ids": []},
+    {"customer_id": "CUS-3009", "display_name": "Tuan Kiet Hoang", "tier": "member", "city": "Da Nang", "phone_masked": "09xx xxx 909", "account_status": "active", "marketing_consent": false, "joined_at": "2026-09-01", "order_ids": []},
+    {"customer_id": "CUS-3010", "display_name": "Ngoc Mai Ly", "tier": "gold", "city": "Ha Noi", "phone_masked": "09xx xxx 010", "account_status": "inactive", "marketing_consent": true, "joined_at": "2020-12-24", "order_ids": []}
+  ]
+}
