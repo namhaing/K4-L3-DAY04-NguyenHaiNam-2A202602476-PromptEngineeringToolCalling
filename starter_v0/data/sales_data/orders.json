@@ -1,0 +1,80 @@
+{
+  "snapshot_at": "2026-09-14T09:00:00+07:00",
+  "currency": "VND",
+  "note": "Fictional orders. Shipping stores city only; payment stores method and status only, never card numbers.",
+  "orders": [
+    {
+      "order_id": "ORD-2001", "customer_id": "CUS-3001", "created_at": "2026-09-11T14:20:00+07:00", "warehouse": "hcm", "status": "shipping",
+      "items": [{"sku": "SKU-1001", "name": "Lenovo ThinkPad T14 Gen 4", "quantity": 1, "unit_price": 32990000, "delivered_qty": 0}],
+      "total": 32990000,
+      "payment": {"method": "card", "status": "paid", "amount": 32990000, "paid_at": "2026-09-11T14:22:00+07:00", "failure_reason": null},
+      "shipping": {"carrier": "NS Express", "tracking_code": "NSX-880121", "ship_to_city": "TP. Hồ Chí Minh", "status": "in_transit", "shipped_at": "2026-09-12T09:00:00+07:00", "eta": "2026-09-15", "delivered_at": null},
+      "issues": []
+    },
+    {
+      "order_id": "ORD-2002", "customer_id": "CUS-3002", "created_at": "2026-09-08T10:05:00+07:00", "warehouse": "hanoi", "status": "delivered",
+      "items": [
+        {"sku": "SKU-1003", "name": "Samsung Galaxy S24", "quantity": 1, "unit_price": 19990000, "delivered_qty": 1},
+        {"sku": "SKU-1008", "name": "Anker Nano II 65W", "quantity": 1, "unit_price": 890000, "delivered_qty": 1}
+      ],
+      "total": 20880000,
+      "payment": {"method": "bank_transfer", "status": "paid", "amount": 20880000, "paid_at": "2026-09-08T10:30:00+07:00", "failure_reason": null},
+      "shipping": {"carrier": "NS Express", "tracking_code": "NSX-879904", "ship_to_city": "Hà Nội", "status": "delivered", "shipped_at": "2026-09-09T08:30:00+07:00", "eta": "2026-09-10", "delivered_at": "2026-09-10T16:45:00+07:00"},
+      "issues": []
+    },
+    {
+      "order_id": "ORD-2003", "customer_id": "CUS-3001", "created_at": "2026-09-13T20:10:00+07:00", "warehouse": "online", "status": "processing",
+      "items": [{"sku": "SKU-1003", "name": "Samsung Galaxy S24", "quantity": 1, "unit_price": 19990000, "delivered_qty": 0}],
+      "total": 19990000,
+      "payment": {"method": "e_wallet", "status": "paid", "amount": 19990000, "paid_at": "2026-09-13T20:11:00+07:00", "failure_reason": null},
+      "shipping": {"carrier": "NS Express", "tracking_code": null, "ship_to_city": "TP. Hồ Chí Minh", "status": "preparing", "shipped_at": null, "eta": "2026-09-17", "delivered_at": null},
+      "issues": []
+    },
+    {
+      "order_id": "ORD-2004", "customer_id": "CUS-3003", "created_at": "2026-09-05T09:40:00+07:00", "warehouse": "danang", "status": "shipping",
+      "items": [{"sku": "SKU-1005", "name": "Apple iPad Air 11 M2", "quantity": 1, "unit_price": 16990000, "delivered_qty": 0}],
+      "total": 16990000,
+      "payment": {"method": "card", "status": "paid", "amount": 16990000, "paid_at": "2026-09-05T09:41:00+07:00", "failure_reason": null},
+      "shipping": {"carrier": "NS Express", "tracking_code": "NSX-878310", "ship_to_city": "Đà Nẵng", "status": "delayed", "shipped_at": "2026-09-06T10:00:00+07:00", "eta": "2026-09-09", "delivered_at": null},
+      "issues": ["Giao trễ 5 ngày so với ETA 2026-09-09; kiện hàng kẹt tại trung tâm phân loại."]
+    },
+    {
+      "order_id": "ORD-2005", "customer_id": "CUS-3004", "created_at": "2026-09-13T11:15:00+07:00", "warehouse": "hcm", "status": "pending_payment",
+      "items": [{"sku": "SKU-1009", "name": "Dell XPS 13 9340", "quantity": 1, "unit_price": 35490000, "delivered_qty": 0}],
+      "total": 35490000,
+      "payment": {"method": "card", "status": "failed", "amount": 35490000, "paid_at": null, "failure_reason": "declined_by_issuer"},
+      "shipping": {"carrier": null, "tracking_code": null, "ship_to_city": "TP. Hồ Chí Minh", "status": "on_hold", "shipped_at": null, "eta": null, "delivered_at": null},
+      "issues": ["Thanh toán thẻ bị ngân hàng từ chối; đơn đang giữ chờ khách thanh toán lại."]
+    },
+    {
+      "order_id": "ORD-2006", "customer_id": "CUS-3005", "created_at": "2026-09-09T15:30:00+07:00", "warehouse": "online", "status": "partially_delivered",
+      "items": [
+        {"sku": "SKU-1002", "name": "Apple MacBook Air 13 M3", "quantity": 1, "unit_price": 27990000, "delivered_qty": 1},
+        {"sku": "SKU-1008", "name": "Anker Nano II 65W", "quantity": 1, "unit_price": 890000, "delivered_qty": 0}
+      ],
+      "total": 28880000,
+      "payment": {"method": "bank_transfer", "status": "paid", "amount": 28880000, "paid_at": "2026-09-09T15:45:00+07:00", "failure_reason": null},
+      "shipping": {"carrier": "NS Express", "tracking_code": "NSX-879512", "ship_to_city": "Cần Thơ", "status": "delivered", "shipped_at": "2026-09-10T08:00:00+07:00", "eta": "2026-09-12", "delivered_at": "2026-09-12T11:20:00+07:00"},
+      "issues": ["Thiếu SKU-1008 trong kiện đã giao; khách báo ngày 2026-09-12."]
+    },
+    {
+      "order_id": "ORD-2007", "customer_id": "CUS-3006", "created_at": "2026-09-12T17:00:00+07:00", "warehouse": "hanoi", "status": "shipping",
+      "items": [{"sku": "SKU-1006", "name": "Xiaomi Redmi Note 13 Pro", "quantity": 2, "unit_price": 7490000, "delivered_qty": 0}],
+      "total": 14980000,
+      "payment": {"method": "cod", "status": "pending_on_delivery", "amount": 14980000, "paid_at": null, "failure_reason": null},
+      "shipping": {"carrier": "NS Express", "tracking_code": "NSX-880077", "ship_to_city": "Hà Nội", "status": "in_transit", "shipped_at": "2026-09-13T09:30:00+07:00", "eta": "2026-09-15", "delivered_at": null},
+      "issues": []
+    },
+    {
+      "order_id": "ORD-2008", "customer_id": "CUS-3002", "created_at": "2026-08-22T13:00:00+07:00", "warehouse": "hcm", "status": "delivered",
+      "items": [
+        {"sku": "SKU-1004", "name": "Sony WH-1000XM5", "quantity": 1, "unit_price": 7990000, "delivered_qty": 1},
+        {"sku": "SKU-1007", "name": "Apple Watch Series 9 45mm", "quantity": 1, "unit_price": 11490000, "delivered_qty": 1}
+      ],
+      "total": 19480000,
+      "payment": {"method": "card", "status": "paid", "amount": 19480000, "paid_at": "2026-08-22T13:02:00+07:00", "failure_reason": null},
+      "shipping": {"carrier": "NS Express", "tracking_code": "NSX-871455", "ship_to_city": "Hà Nội", "status": "delivered", "shipped_at": "2026-08-23T08:00:00+07:00", "eta": "2026-08-25", "delivered_at": "2026-08-25T15:10:00+07:00"},
+      "issues": []
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "snapshot_at": "2026-09-14T09:00:00+07:00",
+  "note": "Fictional customers. Phone numbers are masked; no full address, email or payment card data is stored.",
+  "customers": [
+    {"customer_id": "CUS-3001", "full_name": "Nguyễn Minh Anh", "tier": "gold", "city": "TP. Hồ Chí Minh", "phone_masked": "09xx-xxx-201", "member_since": "2022-03-14", "loyalty_points": 4820, "account_status": "active", "order_ids": ["ORD-2001", "ORD-2003"]},
+    {"customer_id": "CUS-3002", "full_name": "Trần Quốc Bảo", "tier": "platinum", "city": "Hà Nội", "phone_masked": "09xx-xxx-302", "member_since": "2020-11-02", "loyalty_points": 12950, "account_status": "active", "order_ids": ["ORD-2002", "ORD-2008"]},
+    {"customer_id": "CUS-3003", "full_name": "Lê Thu Hà", "tier": "silver", "city": "Đà Nẵng", "phone_masked": "08xx-xxx-403", "member_since": "2023-06-21", "loyalty_points": 1760, "account_status": "active", "order_ids": ["ORD-2004"]},
+    {"customer_id": "CUS-3004", "full_name": "Phạm Gia Huy", "tier": "member", "city": "TP. Hồ Chí Minh", "phone_masked": "07xx-xxx-504", "member_since": "2026-08-30", "loyalty_points": 0, "account_status": "active", "order_ids": ["ORD-2005"]},
+    {"customer_id": "CUS-3005", "full_name": "Võ Ngọc Lan", "tier": "gold", "city": "Cần Thơ", "phone_masked": "09xx-xxx-605", "member_since": "2021-09-09", "loyalty_points": 6310, "account_status": "active", "order_ids": ["ORD-2006"]},
+    {"customer_id": "CUS-3006", "full_name": "Đặng Văn Khoa", "tier": "silver", "city": "Hà Nội", "phone_masked": "03xx-xxx-706", "member_since": "2024-01-17", "loyalty_points": 2240, "account_status": "active", "order_ids": ["ORD-2007"]},
+    {"customer_id": "CUS-3007", "full_name": "Bùi Thanh Mai", "tier": "member", "city": "Hải Phòng", "phone_masked": "09xx-xxx-807", "member_since": "2025-12-05", "loyalty_points": 350, "account_status": "active", "order_ids": []},
+    {"customer_id": "CUS-3008", "full_name": "Hoàng Đức Trí", "tier": "gold", "city": "TP. Hồ Chí Minh", "phone_masked": "08xx-xxx-908", "member_since": "2019-07-28", "loyalty_points": 8900, "account_status": "active", "order_ids": []},
+    {"customer_id": "CUS-3009", "full_name": "Đỗ Phương Linh", "tier": "silver", "city": "TP. Hồ Chí Minh", "phone_masked": "09xx-xxx-009", "member_since": "2023-02-11", "loyalty_points": 1480, "account_status": "locked", "lock_reason": "Tạm khóa chờ xác minh giao dịch bất thường", "order_ids": []},
+    {"customer_id": "CUS-3010", "full_name": "Ngô Tuấn Kiệt", "tier": "member", "city": "Đà Nẵng", "phone_masked": "07xx-xxx-110", "member_since": "2026-05-19", "loyalty_points": 120, "account_status": "active", "order_ids": []}
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "snapshot_at": "2026-09-14T09:00:00+07:00",
+  "note": "Fictional stock snapshot. status: in_stock (qty > 3), low_stock (1-3), out_of_stock (0, no confirmed shipment), incoming (0, shipment confirmed on restock_date).",
+  "warehouses": [
+    {"warehouse": "hcm", "name": "Kho TP. Hồ Chí Minh"},
+    {"warehouse": "hanoi", "name": "Kho Hà Nội"},
+    {"warehouse": "danang", "name": "Kho Đà Nẵng"},
+    {"warehouse": "online", "name": "Kho bán online"}
+  ],
+  "stock": [
+    {"sku": "SKU-1001", "warehouse": "hcm", "qty": 12, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1001", "warehouse": "hanoi", "qty": 4, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1001", "warehouse": "danang", "qty": 2, "status": "low_stock", "restock_date": "2026-09-22"},
+    {"sku": "SKU-1001", "warehouse": "online", "qty": 20, "status": "in_stock", "restock_date": null},
+
+    {"sku": "SKU-1002", "warehouse": "hcm", "qty": 6, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1002", "warehouse": "hanoi", "qty": 9, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1002", "warehouse": "danang", "qty": 0, "status": "out_of_stock", "restock_date": "2026-09-20"},
+    {"sku": "SKU-1002", "warehouse": "online", "qty": 15, "status": "in_stock", "restock_date": null},
+
+    {"sku": "SKU-1003", "warehouse": "hcm", "qty": 10, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1003", "warehouse": "hanoi", "qty": 3, "status": "low_stock", "restock_date": "2026-09-18"},
+    {"sku": "SKU-1003", "warehouse": "danang", "qty": 5, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1003", "warehouse": "online", "qty": 25, "status": "in_stock", "restock_date": null},
+
+    {"sku": "SKU-1004", "warehouse": "hcm", "qty": 18, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1004", "warehouse": "hanoi", "qty": 0, "status": "out_of_stock", "restock_date": "2026-09-19"},
+    {"sku": "SKU-1004", "warehouse": "danang", "qty": 4, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1004", "warehouse": "online", "qty": 30, "status": "in_stock", "restock_date": null},
+
+    {"sku": "SKU-1005", "warehouse": "hcm", "qty": 7, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1005", "warehouse": "hanoi", "qty": 5, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1005", "warehouse": "danang", "qty": 2, "status": "low_stock", "restock_date": null},
+    {"sku": "SKU-1005", "warehouse": "online", "qty": 11, "status": "in_stock", "restock_date": null},
+
+    {"sku": "SKU-1006", "warehouse": "hcm", "qty": 20, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1006", "warehouse": "hanoi", "qty": 14, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1006", "warehouse": "danang", "qty": 8, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1006", "warehouse": "online", "qty": 40, "status": "in_stock", "restock_date": null},
+
+    {"sku": "SKU-1007", "warehouse": "hcm", "qty": 5, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1007", "warehouse": "hanoi", "qty": 0, "status": "out_of_stock", "restock_date": null},
+    {"sku": "SKU-1007", "warehouse": "danang", "qty": 3, "status": "low_stock", "restock_date": null},
+    {"sku": "SKU-1007", "warehouse": "online", "qty": 9, "status": "in_stock", "restock_date": null},
+
+    {"sku": "SKU-1008", "warehouse": "hcm", "qty": 35, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1008", "warehouse": "hanoi", "qty": 22, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1008", "warehouse": "danang", "qty": 10, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1008", "warehouse": "online", "qty": 3, "status": "low_stock", "restock_date": "2026-09-16"},
+
+    {"sku": "SKU-1009", "warehouse": "hcm", "qty": 3, "status": "low_stock", "restock_date": null},
+    {"sku": "SKU-1009", "warehouse": "hanoi", "qty": 6, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1009", "warehouse": "danang", "qty": 0, "status": "incoming", "restock_date": "2026-09-17"},
+    {"sku": "SKU-1009", "warehouse": "online", "qty": 4, "status": "in_stock", "restock_date": null},
+
+    {"sku": "SKU-1010", "warehouse": "hcm", "qty": 15, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1010", "warehouse": "hanoi", "qty": 12, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1010", "warehouse": "danang", "qty": 6, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1010", "warehouse": "online", "qty": 0, "status": "incoming", "restock_date": "2026-09-16"},
+
+    {"sku": "SKU-1011", "warehouse": "hcm", "qty": 4, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1011", "warehouse": "hanoi", "qty": 2, "status": "low_stock", "restock_date": null},
+    {"sku": "SKU-1011", "warehouse": "danang", "qty": 0, "status": "out_of_stock", "restock_date": null},
+    {"sku": "SKU-1011", "warehouse": "online", "qty": 0, "status": "incoming", "restock_date": "2026-09-18"},
+
+    {"sku": "SKU-1012", "warehouse": "hcm", "qty": 9, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1012", "warehouse": "hanoi", "qty": 7, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1012", "warehouse": "danang", "qty": 5, "status": "in_stock", "restock_date": null},
+    {"sku": "SKU-1012", "warehouse": "online", "qty": 12, "status": "in_stock", "restock_date": null}
+  ]
+}
