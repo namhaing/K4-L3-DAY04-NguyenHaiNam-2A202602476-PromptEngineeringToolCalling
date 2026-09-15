@@ -15,6 +15,13 @@ from .policy.tool import search_company_policy
 from .search_kb.tool import search_kb
 from .search_device_info.tool import search_device_info
 
+# Sales assistant tools (Northstar Electronics). Import a teammate's tool only
+# after its folder is pushed; a missing module breaks every entry point.
+from .check_stock.tool import check_stock
+from .create_order.tool import create_order
+from .get_order.tool import get_order
+from .search_products.tool import search_products
+
 
 # These names are part of the fixed evaluation contract. Keep built-in names
 # unchanged in tools.yaml, this registry and the supplied datasets. Improve
@@ -30,6 +37,12 @@ TOOL_FUNCTIONS = {
     "format_incident_report": format_incident_report,
     "policy": search_company_policy,
     "create_ticket": create_ticket,
+    # Sales assistant tools. Pending: lookup_customer (A); sales_policy,
+    # format_quote, search_product_web (D).
+    "search_products": search_products,
+    "check_stock": check_stock,
+    "get_order": get_order,
+    "create_order": create_order,
 }
 
 
