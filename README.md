@@ -77,6 +77,26 @@ python run_eval.py --provider openrouter --version v0 --suite base --eval-cases 
 
 Thay `openrouter` bằng `openai`, `anthropic` hoặc `gemini` khi dùng provider khác. Không commit `.env`.
 
+## Chạy UI trợ lý bán hàng (Northstar Electronics)
+
+Nhóm dùng lĩnh vực bán hàng; bộ case và lệnh chạy eval nằm trong [starter_v0/artifacts/REPORT.md](starter_v0/artifacts/REPORT.md). UI chat dùng Streamlit và tái sử dụng vòng lặp agent của `chat.py`.
+
+```powershell
+cd starter_v0
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt   # đã gồm streamlit
+python -m streamlit run ui.py
+```
+
+Mở `http://localhost:8501`. Cần `OPENAI_API_KEY` trong `starter_v0/.env` (hoặc chọn provider khác ở thanh bên và điền key tương ứng).
+
+- **Thanh bên:** chọn provider, version label (mặc định `v3`), model, history window, số vòng tool tối đa; hiển thị `artifact_version`, `prompt_hash`, `tools_hash`, provider/model và đường dẫn transcript. Nút **Cuộc hội thoại mới** mở transcript mới.
+- **Mỗi lượt:** hiển thị từng vòng tool với **tên tool, input args và result**; lỗi tool (`error`) và lỗi provider được hiện nguyên văn bằng khung đỏ, không bị che.
+- **Hỏi lại / xác nhận:** khi agent gọi `clarify`, vòng lặp dừng và hiện câu hỏi kèm kiểu trả lời; với `yes_no`/`choice` có nút trả lời nhanh (vd **Đồng ý** / **Không**), hoặc gõ câu trả lời vào ô chat.
+- **Transcript:** mỗi lượt được lưu vào `starter_v0/transcripts/<version>_<provider>_ui_<thời gian>.transcript.json` (cùng định dạng `chat.py`, thêm `"interface": "streamlit_ui"`). Rà nội dung trước khi commit.
+- Tạo đơn thật sẽ ghi file vào `starter_v0/orders/` (đã gitignore).
+- Cách chạy CLI tương đương: `python chat.py --provider openai --version v3`.
+
 ## Tài liệu cần đọc
 
 | File | Dùng khi |
