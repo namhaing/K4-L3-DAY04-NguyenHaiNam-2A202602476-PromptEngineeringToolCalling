@@ -5,6 +5,44 @@
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
   "cases": [
     {
+      "id": "G_S01_data_privacy_policy_routing", "phase": "B", "suite": "group",
+      "query": "Một khách nhờ nhân viên gửi lịch sử mua hàng của người thân qua Zalo; tra giúp quy định bảo vệ dữ liệu khách hàng về việc chia sẻ thông tin này.",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "sales_policy", "args": {"policy_area": "data_privacy"}}]},
+      "metadata": {"skill": "policy_area_data_privacy", "difficulty": "medium", "what_it_tests": "Câu hỏi về chia sẻ dữ liệu khách phải route sales_policy với policy_area data_privacy; không gọi lookup_customer vì không có mã khách và user chỉ hỏi quy định."}
+    },
+    {
+      "id": "G_S02_order_processing_policy_routing", "phase": "B", "suite": "group",
+      "query": "Theo quy trình nội bộ, khi kho khách chọn không đủ số lượng lúc tạo đơn thì nhân viên phải xử lý thế nào?",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "sales_policy", "args": {"policy_area": "order_processing"}}]},
+      "metadata": {"skill": "policy_area_order_processing", "difficulty": "medium", "what_it_tests": "Quy định xử lý hết hàng khi tạo đơn thuộc order_processing, không phải shipping; không gọi check_stock vì không có SKU cụ thể."}
+    },
+    {
+      "id": "G_S03_invoice_draft_format", "phase": "B", "suite": "group",
+      "query": "Làm hóa đơn nháp tên 'Đơn nháp đồng hồ chạy bộ' để khách xem trước, từ dòng hàng đã có: SKU-1011 Garmin Forerunner 265 x2 giá 9.990.000. Không cần tra lại giá hay tồn kho.",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "format_quote", "args": {"template": "invoice_draft", "title": "Đơn nháp đồng hồ chạy bộ"}}]},
+      "metadata": {"skill": "format_quote_invoice_draft", "difficulty": "medium", "what_it_tests": "'Hóa đơn nháp để khách xem trước' map sang template invoice_draft, giữ nguyên title; chỉ gọi format_quote, không expect lines (mảng object)."}
+    },
+    {
+      "id": "G_S04_incoming_restock_date", "phase": "B", "suite": "group",
+      "query": "AirPods Pro 2 mã SKU-1010 ở kho online bao giờ mới có hàng lại?",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "check_stock", "args": {"sku": "SKU-1010", "warehouse": "online"}}]},
+      "metadata": {"skill": "stock_restock_date", "difficulty": "easy", "what_it_tests": "Hỏi ngày về hàng của một SKU tại một kho dùng check_stock (trả status incoming + restock_date), không dùng search_products hay search_product_web."}
+    },
+    {
+      "id": "G_S05_parallel_failed_payment_and_policy", "phase": "B", "suite": "group",
+      "query": "Đơn ORD-2005 báo thanh toán lỗi; xem phần thanh toán của đơn và tra quy định xử lý khi thanh toán thất bại.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [
+        {"name": "get_order", "args": {"order_id": "ORD-2005", "view": "payment"}},
+        {"name": "sales_policy", "args": {"policy_area": "payment"}}
+      ]},
+      "metadata": {"skill": "parallel_order_and_payment_policy", "difficulty": "hard", "what_it_tests": "Hai nguồn độc lập gọi song song: get_order view payment và sales_policy policy_area payment; không gọi thêm lookup_customer."}
+    },
+    {
       "id": "G_M01_valid_confirmation_creates_order", "phase": "B", "suite": "group",
       "turns": [
         {"role": "user", "content": "Tạo đơn cho khách CUS-3007: 1 loa SKU-1012, xuất kho Hà Nội."},
