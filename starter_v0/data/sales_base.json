@@ -1,0 +1,276 @@
+{
+  "dataset_id": "day04_sales_northstar_base",
+  "dataset_role": "base",
+  "description": "Fixed core eval for the Northstar Electronics sales assistant: 20 single-turn and 10 multi-turn cases. Locked before v0; do not edit prompts, expected behavior or arguments to improve scores.",
+  "cases": [
+    {
+      "id": "S01_stock_routing", "phase": "B", "suite": "base",
+      "query": "Còn SKU-1002 ở kho HCM không?",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "check_stock", "args": {"sku": "SKU-1002", "warehouse": "hcm"}}]},
+      "metadata": {"skill": "route_stock", "difficulty": "easy", "what_it_tests": "Hỏi còn hàng ở một kho phải dùng check_stock, không tìm catalog."}
+    },
+    {
+      "id": "S02_order_routing", "phase": "B", "suite": "base",
+      "query": "Xem toàn bộ thông tin đơn ORD-2003 giúp mình.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "get_order", "args": {"order_id": "ORD-2003", "view": "all"}}]},
+      "metadata": {"skill": "route_order", "difficulty": "easy", "what_it_tests": "Tra một đơn cụ thể phải dùng get_order với view all."}
+    },
+    {
+      "id": "S03_product_search_routing", "phase": "B", "suite": "base",
+      "query": "Tìm giúp mấy mẫu tai nghe chống ồn để giới thiệu cho khách.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "search_products", "args": {"category": "audio"}}]},
+      "metadata": {"skill": "route_catalog", "difficulty": "easy", "what_it_tests": "Tìm sản phẩm theo nhu cầu dùng search_products, map tai nghe sang category audio."}
+    },
+    {
+      "id": "S04_customer_routing", "phase": "B", "suite": "base",
+      "query": "Tra khách hàng CUS-3004 và các đơn khách đã mua.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "lookup_customer", "args": {"customer_id": "CUS-3004"}}]},
+      "metadata": {"skill": "route_customer", "difficulty": "easy", "what_it_tests": "Thông tin khách và danh sách mã đơn lấy từ lookup_customer, không đoán mã đơn."}
+    },
+    {
+      "id": "S05_order_view_arg", "phase": "B", "suite": "base",
+      "query": "Chỉ cần xem tình trạng giao hàng của đơn ORD-2001.",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "get_order", "args": {"order_id": "ORD-2001", "view": "shipping"}}]},
+      "metadata": {"skill": "order_view_arg", "difficulty": "medium", "what_it_tests": "Giao hàng phải map sang view shipping, không lấy all."}
+    },
+    {
+      "id": "S06_warehouse_arg", "phase": "B", "suite": "base",
+      "query": "Kho Đà Nẵng còn SKU-1005 không?",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "check_stock", "args": {"sku": "SKU-1005", "warehouse": "danang"}}]},
+      "metadata": {"skill": "warehouse_arg", "difficulty": "medium", "what_it_tests": "Tên kho tiếng Việt phải map đúng enum danang."}
+    },
+    {
+      "id": "S07_format_quote_detailed", "phase": "B", "suite": "base",
+      "query": "Soạn báo giá chi tiết tên 'Báo giá văn phòng Q3' từ các dòng hàng sau: SKU-1001 Lenovo ThinkPad T14 Gen 4 x2 giá 32.990.000; SKU-1008 Anker Nano II 65W x2 giá 890.000.",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "format_quote", "args": {"template": "detailed", "title": "Báo giá văn phòng Q3"}}]},
+      "metadata": {"skill": "format_quote_args", "difficulty": "medium", "what_it_tests": "Đã có dòng hàng thì chỉ format với template detailed và đúng title; không expect lines (mảng object)."}
+    },
+    {
+      "id": "S08_out_of_scope", "phase": "B", "suite": "base",
+      "query": "Viết giúp mình một bài thơ tình tặng người yêu.",
+      "failure_type": "out_of_scope",
+      "expect": {"no_tool": true, "behavior": "refuse"},
+      "metadata": {"skill": "out_of_scope", "difficulty": "easy", "what_it_tests": "Yêu cầu không liên quan bán hàng không gọi tool."}
+    },
+    {
+      "id": "S09_capability_no_tool", "phase": "B", "suite": "base",
+      "query": "Bạn hỗ trợ được những việc gì cho nhân viên bán hàng?",
+      "failure_type": "unnecessary_tool",
+      "expect": {"no_tool": true, "behavior": "answer_without_tool"},
+      "metadata": {"skill": "meta_no_tool", "difficulty": "easy", "what_it_tests": "Hỏi năng lực trả lời trực tiếp, không gọi tool."}
+    },
+    {
+      "id": "S10_missing_order_id", "phase": "B", "suite": "base",
+      "query": "Kiểm tra giúp đơn hàng của khách đang ở đâu rồi.",
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "text"}}]},
+      "metadata": {"skill": "clarify_order_id", "difficulty": "medium", "what_it_tests": "Thiếu mã đơn phải hỏi lại, không đoán ORD-xxxx."}
+    },
+    {
+      "id": "S11_missing_customer_id", "phase": "B", "suite": "base",
+      "query": "Tra thông tin chị khách mua laptop hôm qua giúp mình.",
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "text"}}]},
+      "metadata": {"skill": "clarify_customer_id", "difficulty": "medium", "what_it_tests": "Mô tả mơ hồ không có mã khách phải hỏi lại mã khách hoặc mã đơn."}
+    },
+    {
+      "id": "S12_confirm_before_order", "phase": "B", "suite": "base",
+      "query": "Tạo đơn cho khách CUS-3001: 1 cái SKU-1001, xuất kho HCM.",
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]},
+      "metadata": {"skill": "confirm_write", "difficulty": "medium", "what_it_tests": "Tạo đơn là hành động ghi, phải tóm tắt và hỏi xác nhận yes/no trước."}
+    },
+    {
+      "id": "S13_parallel_customer_and_stock", "phase": "B", "suite": "base",
+      "query": "Tra khách CUS-3002 và kiểm tra tồn kho SKU-1003 ở kho Hà Nội.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [
+        {"name": "lookup_customer", "args": {"customer_id": "CUS-3002"}},
+        {"name": "check_stock", "args": {"sku": "SKU-1003", "warehouse": "hanoi"}}
+      ]},
+      "metadata": {"skill": "parallel_two_sources", "difficulty": "medium", "what_it_tests": "Hai nguồn độc lập phải gọi song song trong cùng một response."}
+    },
+    {
+      "id": "S14_out_of_scope_coding", "phase": "B", "suite": "base",
+      "query": "Viết tool Python crawl giá sản phẩm trên các sàn thương mại điện tử.",
+      "failure_type": "out_of_scope",
+      "expect": {"no_tool": true, "behavior": "refuse"},
+      "metadata": {"skill": "out_of_scope_coding", "difficulty": "easy", "what_it_tests": "Viết code không thuộc phạm vi, không gọi web search thay thế."}
+    },
+    {
+      "id": "S15_compare_two_warehouses", "phase": "B", "suite": "base",
+      "query": "So sánh tồn kho SKU-1004 ở kho HCM và kho Hà Nội.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [
+        {"name": "check_stock", "args": {"sku": "SKU-1004", "warehouse": "hcm"}},
+        {"name": "check_stock", "args": {"sku": "SKU-1004", "warehouse": "hanoi"}}
+      ]},
+      "metadata": {"skill": "compare_warehouses", "difficulty": "medium", "what_it_tests": "Mỗi call một kho; so sánh hai kho cần hai call song song."}
+    },
+    {
+      "id": "S16_compare_two_payments", "phase": "B", "suite": "base",
+      "query": "So sánh trạng thái thanh toán của đơn ORD-2002 và ORD-2005.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [
+        {"name": "get_order", "args": {"order_id": "ORD-2002", "view": "payment"}},
+        {"name": "get_order", "args": {"order_id": "ORD-2005", "view": "payment"}}
+      ]},
+      "metadata": {"skill": "compare_orders", "difficulty": "medium", "what_it_tests": "Hai đơn cần hai call get_order với view payment."}
+    },
+    {
+      "id": "S17_delay_triage_three_sources", "phase": "B", "suite": "base",
+      "query": "Khách CUS-3003 phàn nàn đơn ORD-2004 giao trễ; xem tình trạng giao hàng của đơn, tra thông tin khách và tra chính sách vận chuyển về giao trễ.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [
+        {"name": "get_order", "args": {"order_id": "ORD-2004", "view": "shipping"}},
+        {"name": "lookup_customer", "args": {"customer_id": "CUS-3003"}},
+        {"name": "sales_policy", "args": {"policy_area": "shipping"}}
+      ]},
+      "metadata": {"skill": "triage_three_sources", "difficulty": "hard", "what_it_tests": "Ba nguồn độc lập gọi song song, policy route đúng area shipping."}
+    },
+    {
+      "id": "S18_missing_item_order_and_stock", "phase": "B", "suite": "base",
+      "query": "Đơn ORD-2006 bị giao thiếu SKU-1008; xem các dòng hàng của đơn và tồn kho SKU-1008 ở kho online.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [
+        {"name": "get_order", "args": {"order_id": "ORD-2006", "view": "items"}},
+        {"name": "check_stock", "args": {"sku": "SKU-1008", "warehouse": "online"}}
+      ]},
+      "metadata": {"skill": "order_items_and_stock", "difficulty": "hard", "what_it_tests": "Dòng hàng dùng view items, tồn kho online dùng check_stock; gọi song song."}
+    },
+    {
+      "id": "S19_unknown_warehouse", "phase": "B", "suite": "base",
+      "query": "Kiểm tra SKU-1002 ở kho Cần Thơ còn không.",
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "choice", "options": ["hcm", "hanoi", "danang", "online"]}}]},
+      "metadata": {"skill": "clarify_warehouse", "difficulty": "hard", "what_it_tests": "Kho không có trong enum thì hỏi chọn một kho hợp lệ, không tự map sang kho gần nhất."}
+    },
+    {
+      "id": "S20_format_without_refetch", "phase": "B", "suite": "base",
+      "query": "Đã có giá và tồn kho: SKU-1010 AirPods Pro 2 x1 giá 5.990.000; SKU-1004 Sony WH-1000XM5 x1 giá 7.990.000. Chỉ format thành báo giá ngắn tên 'Tai nghe cho khách', không tra lại.",
+      "failure_type": "unnecessary_tool",
+      "expect": {"tool_calls": [{"name": "format_quote", "args": {"template": "brief", "title": "Tai nghe cho khách"}}]},
+      "metadata": {"skill": "format_only_boundary", "difficulty": "hard", "what_it_tests": "Tôn trọng 'không tra lại'; gọi thêm check_stock hoặc search_products là fail."}
+    },
+    {
+      "id": "SM01_clarify_then_order", "phase": "B", "suite": "base",
+      "turns": [
+        {"role": "user", "content": "Đơn của khách tới đâu rồi?"},
+        {"role": "user", "content": "Mã đơn là ORD-2003."},
+        {"role": "user", "content": "Chỉ xem phần giao hàng thôi."}
+      ],
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "get_order", "args": {"order_id": "ORD-2003", "view": "shipping"}}]},
+      "metadata": {"skill": "multiturn_fill_order_id", "difficulty": "hard", "what_it_tests": "Carry mã đơn đã bổ sung và dùng view mới nhất."}
+    },
+    {
+      "id": "SM02_carry_warehouse", "phase": "B", "suite": "base",
+      "turns": [
+        {"role": "user", "content": "SKU-1002 ở kho Hà Nội còn không?"},
+        {"role": "user", "content": "Còn SKU-1006 thì sao?"},
+        {"role": "user", "content": "Chỉ kiểm tra SKU-1006, vẫn kho Hà Nội."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "check_stock", "args": {"sku": "SKU-1006", "warehouse": "hanoi"}}]},
+      "metadata": {"skill": "multiturn_carry_warehouse", "difficulty": "hard", "what_it_tests": "Đổi SKU nhưng giữ kho từ lượt trước; không gọi lại SKU cũ."}
+    },
+    {
+      "id": "SM03_correct_order_id", "phase": "B", "suite": "base",
+      "turns": [
+        {"role": "user", "content": "Xem thanh toán của đơn ORD-2001."},
+        {"role": "user", "content": "À nhầm, đơn ORD-2007."},
+        {"role": "user", "content": "Vẫn chỉ xem phần thanh toán."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "get_order", "args": {"order_id": "ORD-2007", "view": "payment"}}]},
+      "metadata": {"skill": "multiturn_correction", "difficulty": "hard", "what_it_tests": "Mã đơn sửa sau thắng mã cũ."}
+    },
+    {
+      "id": "SM04_correct_customer_id", "phase": "B", "suite": "base",
+      "turns": [
+        {"role": "user", "content": "Tra khách CUS-3001."},
+        {"role": "user", "content": "Mình gõ nhầm, là CUS-3005."},
+        {"role": "user", "content": "Khách đó hạng thành viên gì?"}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "lookup_customer", "args": {"customer_id": "CUS-3005"}}]},
+      "metadata": {"skill": "multiturn_customer_correction", "difficulty": "medium", "what_it_tests": "Mã khách được sửa ở lượt sau."}
+    },
+    {
+      "id": "SM05_order_confirmation", "phase": "B", "suite": "base",
+      "turns": [
+        {"role": "user", "content": "Tạo đơn cho CUS-3002: 1 SKU-1003, xuất kho HCM."},
+        {"role": "user", "content": "Đổi số lượng thành 2."},
+        {"role": "user", "content": "Tóm tắt lại đơn và hỏi xác nhận trước khi tạo."}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]},
+      "metadata": {"skill": "multiturn_confirmation", "difficulty": "hard", "what_it_tests": "Sau khi đổi số lượng vẫn phải dừng ở bước xác nhận."}
+    },
+    {
+      "id": "SM06_switch_to_catalog", "phase": "B", "suite": "base",
+      "turns": [
+        {"role": "user", "content": "Kiểm tra tồn kho SKU-1004 ở kho online."},
+        {"role": "user", "content": "Thôi không cần tồn kho nữa, tìm sản phẩm tương tự để gợi ý khách."},
+        {"role": "user", "content": "Chỉ cần các mẫu tai nghe."}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "search_products", "args": {"category": "audio"}}]},
+      "metadata": {"skill": "multiturn_switch_tool", "difficulty": "hard", "what_it_tests": "Intent mới thay check_stock bằng search_products category audio."}
+    },
+    {
+      "id": "SM07_cancel_order", "phase": "B", "suite": "base",
+      "turns": [
+        {"role": "user", "content": "Tạo đơn cho CUS-3004 mua 1 SKU-1009 kho HCM."},
+        {"role": "user", "content": "Dừng lại, không tạo đơn nữa."},
+        {"role": "user", "content": "Chỉ xác nhận là bạn đã hủy yêu cầu."}
+      ],
+      "failure_type": "unnecessary_tool",
+      "expect": {"no_tool": true, "behavior": "answer_without_tool"},
+      "metadata": {"skill": "multiturn_cancel", "difficulty": "hard", "what_it_tests": "Lệnh hủy mới nhất thắng; không clarify, không create_order."}
+    },
+    {
+      "id": "SM08_correct_then_parallel", "phase": "B", "suite": "base",
+      "turns": [
+        {"role": "user", "content": "Đơn ORD-2002 bị giao thiếu hàng."},
+        {"role": "user", "content": "À đúng ra là đơn ORD-2006, thiếu củ sạc SKU-1008."},
+        {"role": "user", "content": "Xem các dòng hàng của đơn đó và tồn kho SKU-1008 ở kho online."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [
+        {"name": "get_order", "args": {"order_id": "ORD-2006", "view": "items"}},
+        {"name": "check_stock", "args": {"sku": "SKU-1008", "warehouse": "online"}}
+      ]},
+      "metadata": {"skill": "multiturn_correction_parallel", "difficulty": "hard", "what_it_tests": "Carry mã đơn đã sửa và tạo hai call song song từ lượt mới nhất."}
+    },
+    {
+      "id": "SM09_confirmation_invalidated", "phase": "B", "suite": "base",
+      "turns": [
+        {"role": "user", "content": "Tôi xác nhận tạo đơn cho CUS-3001: 1 SKU-1001, kho HCM."},
+        {"role": "user", "content": "Khoan, đổi thành 3 máy và xuất từ kho Hà Nội."},
+        {"role": "user", "content": "Rà lại đơn mới trước đã."}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "yes_no"}}]},
+      "metadata": {"skill": "confirmation_payload_change", "difficulty": "hard", "what_it_tests": "Xác nhận cũ mất hiệu lực khi số lượng và kho thay đổi."}
+    },
+    {
+      "id": "SM10_latest_intent_wins", "phase": "B", "suite": "base",
+      "turns": [
+        {"role": "user", "content": "Xem đơn ORD-2004."},
+        {"role": "user", "content": "Không cần xem đơn nữa."},
+        {"role": "user", "content": "Chỉ tra thông tin khách CUS-3006."}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "lookup_customer", "args": {"customer_id": "CUS-3006"}}]},
+      "metadata": {"skill": "latest_intent_replacement", "difficulty": "hard", "what_it_tests": "Không gọi get_order cũ từ lượt đầu."}
+    }
+  ]
+}
