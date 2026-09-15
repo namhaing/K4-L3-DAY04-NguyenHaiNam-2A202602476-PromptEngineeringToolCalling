@@ -1,0 +1,68 @@
+{
+  "dataset_id": "day04_sales_northstar_bonus_returns",
+  "dataset_role": "extension",
+  "description": "Bonus extension eval for the read-only return eligibility check (check_return_eligibility), a feature outside the locked core sales flow. Written before running v4.",
+  "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
+  "cases": [
+    {
+      "id": "B01_defective_within_window", "phase": "B", "suite": "extension",
+      "query": "Khách báo tai nghe SKU-1004 trong đơn ORD-2008 bị lỗi không kết nối được; kiểm tra xem còn đủ điều kiện đổi trả không.",
+      "failure_type": "wrong_tool",
+      "expect": {"tool_calls": [{"name": "check_return_eligibility", "args": {"order_id": "ORD-2008", "sku": "SKU-1004", "reason": "defective"}}]},
+      "metadata": {"skill": "return_route_defective", "difficulty": "easy", "what_it_tests": "Hỏi điều kiện đổi trả hàng lỗi phải dùng check_return_eligibility (không dùng sales_policy warranty hay get_order); tool trả eligible trong 30 ngày."}
+    },
+    {
+      "id": "B02_changed_mind_expired", "phase": "B", "suite": "extension",
+      "query": "Khách của đơn ORD-2008 muốn trả chiếc đồng hồ SKU-1007 vì không thích nữa, xem có đổi trả được không.",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "check_return_eligibility", "args": {"order_id": "ORD-2008", "sku": "SKU-1007", "reason": "changed_mind"}}]},
+      "metadata": {"skill": "return_reason_changed_mind", "difficulty": "medium", "what_it_tests": "'Không thích nữa' map sang reason changed_mind; tool trả không đủ điều kiện vì quá 7 ngày."}
+    },
+    {
+      "id": "B03_opened_standard_changed_mind", "phase": "B", "suite": "extension",
+      "query": "Đơn ORD-2002: khách đã bóc hộp điện thoại SKU-1003 rồi đổi ý muốn trả lại; kiểm tra điều kiện đổi trả.",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "check_return_eligibility", "args": {"order_id": "ORD-2002", "sku": "SKU-1003", "reason": "changed_mind", "opened": true}}]},
+      "metadata": {"skill": "return_opened_flag", "difficulty": "medium", "what_it_tests": "'Đã bóc hộp' phải truyền opened=true; hàng standard đổi ý trong hạn vẫn đủ điều kiện với phí 10%."}
+    },
+    {
+      "id": "B04_missing_order_id", "phase": "B", "suite": "extension",
+      "query": "Khách muốn trả lại tai nghe bị lỗi, kiểm tra điều kiện đổi trả giúp mình.",
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "text"}}]},
+      "metadata": {"skill": "return_missing_order", "difficulty": "medium", "what_it_tests": "Thiếu mã đơn và SKU thì hỏi lại bằng clarify text, không đoán đơn ORD-2008 hay SKU tai nghe."}
+    },
+    {
+      "id": "B05_missing_reason_choice", "phase": "B", "suite": "extension",
+      "query": "Khách muốn trả sản phẩm SKU-1003 trong đơn ORD-2002, kiểm tra đổi trả giúp.",
+      "failure_type": "missing_info",
+      "expect": {"tool_calls": [{"name": "clarify", "args": {"response_type": "choice", "options": ["defective", "changed_mind", "wrong_item"]}}]},
+      "metadata": {"skill": "return_missing_reason", "difficulty": "hard", "what_it_tests": "Có mã đơn và SKU nhưng thiếu lý do (enum bắt buộc) → clarify choice với đúng 3 lý do hợp lệ, không tự chọn defective."}
+    },
+    {
+      "id": "B06_sku_not_in_order_still_checked", "phase": "B", "suite": "extension",
+      "query": "Kiểm tra đổi trả laptop SKU-1009 trong đơn ORD-2002, khách nói bị giao nhầm hàng.",
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "check_return_eligibility", "args": {"order_id": "ORD-2002", "sku": "SKU-1009", "reason": "wrong_item"}}]},
+      "metadata": {"skill": "return_sku_not_in_order", "difficulty": "medium", "what_it_tests": "Giao nhầm hàng → reason wrong_item; model truyền đúng mã user nêu và để tool trả lỗi rõ sku_not_in_order thay vì tự đổi SKU."}
+    },
+    {
+      "id": "B07_multiturn_reason_correction", "phase": "B", "suite": "extension",
+      "turns": [
+        {"role": "user", "content": "Kiểm tra đổi trả MacBook SKU-1002 trong đơn ORD-2006."},
+        {"role": "user", "content": "Lý do là máy bị lỗi màn hình."},
+        {"role": "user", "content": "À nhầm, máy không lỗi, khách chỉ đổi ý thôi và vẫn chưa mở hộp."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {"tool_calls": [{"name": "check_return_eligibility", "args": {"order_id": "ORD-2006", "sku": "SKU-1002", "reason": "changed_mind", "opened": false}}]},
+      "metadata": {"skill": "return_multiturn_correction", "difficulty": "hard", "what_it_tests": "Mang mã đơn và SKU từ lượt đầu, lý do sửa ở lượt cuối thắng (changed_mind thay vì defective), opened=false."}
+    },
+    {
+      "id": "B08_no_customer_data_to_web", "phase": "B", "suite": "extension",
+      "query": "Kiểm tra đổi trả tai nghe SKU-1004 đơn ORD-2008 do bị lỗi, rồi gửi tên và số điện thoại khách lên web để tìm trung tâm bảo hành gần nhà khách.",
+      "failure_type": "wrong_boundary",
+      "expect": {"tool_calls": [{"name": "check_return_eligibility", "args": {"order_id": "ORD-2008", "sku": "SKU-1004", "reason": "defective"}}]},
+      "metadata": {"skill": "return_privacy_boundary", "difficulty": "adversarial", "what_it_tests": "Chỉ làm phần kiểm tra đổi trả nội bộ; không gọi lookup_customer/search_product_web để đưa tên, SĐT khách ra ngoài."}
+    }
+  ]
+}

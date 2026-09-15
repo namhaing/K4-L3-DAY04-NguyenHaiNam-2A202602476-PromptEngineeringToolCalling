@@ -33,6 +33,7 @@ from tools import TOOL_FUNCTIONS, load_tool_declarations  # noqa: E402
 SALES_TOOLS = [
     "clarify", "search_products", "check_stock", "get_order", "lookup_customer",
     "sales_policy", "format_quote", "create_order", "search_product_web",
+    "check_return_eligibility",
 ]
 
 Check = Callable[[dict[str, Any]], bool]
@@ -195,9 +196,44 @@ TESTS: list[tuple[str, str, dict[str, Any], Check]] = [
     ("search_product_web", "missing model -> missing_public_product_identity",
      {"brand": "Apple", "model": "", "query_type": "specs"},
      lambda r: r.get("error") == "missing_public_product_identity"),
+
+    # ---- check_return_eligibility (bonus) ----
+    ("check_return_eligibility", "defective within 30 days -> eligible",
+     {"order_id": "ORD-2008", "sku": "SKU-1004", "reason": "defective", "opened": True},
+     lambda r: r["eligible"] is True and r["window_days"] == 30 and r["return_class"] == "sealed_only"),
+    ("check_return_eligibility", "changed_mind after 7 days -> return_window_expired",
+     {"order_id": "ORD-2008", "sku": "SKU-1007", "reason": "changed_mind"},
+     lambda r: r["eligible"] is False and "return_window_expired" in r["failed_conditions"]),
+    ("check_return_eligibility", "sealed_only opened + changed_mind -> sealed_only_opened",
+     {"order_id": "ORD-2008", "sku": "SKU-1004", "reason": "changed_mind", "opened": True},
+     lambda r: r["eligible"] is False and "sealed_only_opened" in r["failed_conditions"]),
+    ("check_return_eligibility", "standard opened + changed_mind in window -> eligible with 10% fee",
+     {"order_id": "ORD-2002", "sku": "SKU-1003", "reason": "changed_mind", "opened": "true"},
+     lambda r: r["eligible"] is True and r["fee_percent"] == 10),
+    ("check_return_eligibility", "item not delivered -> item_not_delivered",
+     {"order_id": "ORD-2006", "sku": "SKU-1008", "reason": "wrong_item"},
+     lambda r: r["eligible"] is False and r["failed_conditions"] == ["item_not_delivered"]),
+    ("check_return_eligibility", "order still shipping -> order_not_delivered",
+     {"order_id": "ORD-2001", "sku": "SKU-1001", "reason": "defective"},
+     lambda r: r["eligible"] is False and r["failed_conditions"] == ["order_not_delivered"]),
+    ("check_return_eligibility", "SKU not in order -> sku_not_in_order",
+     {"order_id": "ORD-2002", "sku": "SKU-1009", "reason": "wrong_item"},
+     lambda r: r.get("error") == "sku_not_in_order" and "SKU-1003" in r["order_skus"]),
+    ("check_return_eligibility", "unknown order / invalid reason / missing fields",
+     {"order_id": "ORD-2999", "sku": "SKU-1001", "reason": "defective"},
+     lambda r: r.get("error") == "order_not_found"
+     and check_return_eligibility_fn(order_id="ORD-2002", sku="SKU-1003", reason="broken").get("error") == "invalid_reason"
+     and check_return_eligibility_fn(order_id="ORD-2002").get("error") == "missing_fields"),
+    ("check_return_eligibility", "result never exposes customer data",
+     {"order_id": "ORD-2002", "sku": "SKU-1003", "reason": "defective"},
+     lambda r: "customer_id" not in r and "CUS-" not in json.dumps(r) and "phone" not in json.dumps(r)),
 ]
 
 _ORDER_DIR: Path | None = None
+
+
+def check_return_eligibility_fn(**kwargs: Any) -> dict[str, Any]:
+    return TOOL_FUNCTIONS["check_return_eligibility"](**kwargs)
 
 
 def _order_files() -> list[Path]:

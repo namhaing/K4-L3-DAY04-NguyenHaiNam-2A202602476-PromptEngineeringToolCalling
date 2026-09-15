@@ -17,6 +17,7 @@ from .search_device_info.tool import search_device_info
 
 # Sales assistant tools (Northstar Electronics). Import a tool only after its
 # folder exists; a missing module breaks every entry point.
+from .check_return_eligibility.tool import check_return_eligibility
 from .check_stock.tool import check_stock
 from .create_order.tool import create_order
 from .format_quote.tool import format_quote
@@ -50,6 +51,8 @@ TOOL_FUNCTIONS = {
     "format_quote": format_quote,
     "create_order": create_order,
     "search_product_web": search_product_web,
+    # Bonus (outside the locked core flow): read-only return eligibility check.
+    "check_return_eligibility": check_return_eligibility,
 }
 
 
