@@ -183,3 +183,22 @@ tools:
           description: "specs = thông số kỹ thuật; reviews = đánh giá; official_price = giá chính hãng; compatibility = tương thích"
         max_results: {type: integer, default: 3, description: "Số kết quả, tối đa 5"}
       required: [brand, model, query_type]
+
+  # ---------------- Bonus (outside the locked core flow, declared after v3) ----------------
+  - name: check_return_eligibility
+    description: >-
+      Kiểm tra CHỈ ĐỌC điều kiện đổi trả của đúng một sản phẩm trong một đơn đã giao, theo chính sách đổi trả
+      (lỗi kỹ thuật/giao nhầm 30 ngày, đổi ý 7 ngày; hàng sealed_only đã mở không nhận đổi ý). Không tạo phiếu đổi trả,
+      không trả thông tin khách. Cần đủ mã đơn, SKU và lý do; thiếu mã đơn hoặc SKU thì dùng clarify text, thiếu lý do thì
+      dùng clarify choice với options [defective, changed_mind, wrong_item].
+    parameters:
+      type: object
+      properties:
+        order_id: {type: string, description: "Mã đơn dạng ORD- kèm 4 chữ số, đúng như người dùng viết"}
+        sku: {type: string, description: "Mã sản phẩm dạng SKU- kèm 4 chữ số, thuộc đơn đó"}
+        reason:
+          type: string
+          enum: [defective, changed_mind, wrong_item]
+          description: "defective = sản phẩm lỗi/hỏng; changed_mind = khách đổi ý, không thích nữa; wrong_item = giao nhầm sản phẩm"
+        opened: {type: boolean, default: false, description: "true nếu khách đã mở hộp/bóc niêm phong; mặc định false khi người dùng không nói"}
+      required: [order_id, sku, reason]
