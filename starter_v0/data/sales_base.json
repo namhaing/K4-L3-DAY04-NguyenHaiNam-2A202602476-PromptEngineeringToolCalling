@@ -151,7 +151,7 @@
       "id": "S07_format_detailed_quote",
       "phase": "B",
       "suite": "base",
-      "query": "Từ các dòng đã có gồm 1 SKU-1001 ThinkPad T14 Gen 4 giá 25990000 và 2 SKU-1008 sạc Anker 65W giá 890000, soạn báo giá chi tiết tên 'Báo giá văn phòng thiết kế'.",
+      "query": "Từ các dòng đã có gồm 1 SKU-1001 ThinkPad T14 Gen 4 giá 32990000 và 2 SKU-1008 Anker Nano II 65W giá 890000, soạn báo giá chi tiết tên 'Báo giá văn phòng thiết kế'.",
       "failure_type": "wrong_arg_value",
       "expect": {
         "tool_calls": [
@@ -470,7 +470,7 @@
       "id": "S20_format_without_refetch",
       "phase": "B",
       "suite": "base",
-      "query": "Đã có giá và tồn kho: 1 SKU-1004 giá 7490000 còn 14 chiếc ở kho HCM. Chỉ format thành báo giá ngắn, không tra lại dữ liệu.",
+      "query": "Đã có giá và tồn kho: 1 SKU-1004 giá 7990000 còn 18 chiếc ở kho HCM. Chỉ format thành báo giá ngắn, không tra lại dữ liệu.",
       "failure_type": "unnecessary_tool",
       "expect": {
         "tool_calls": [
