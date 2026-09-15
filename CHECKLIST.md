@@ -1,6 +1,6 @@
 # Checklist Day04 — Trợ lý Bán hàng (nhóm 4 người)
 
-Checklist bám theo [README.md](README.md), [RUBRIC.md](RUBRIC.md), [CHECKPOINTS.md](CHECKPOINTS.md), [SUBMISSION.md](SUBMISSION.md) và [RULES.md](RULES.md). Các vai A/B/C/D: A là người đại diện (Nguyễn Hải Nam); B, C, D thay bằng tên thành viên.
+Checklist bám theo [README.md](README.md), [RUBRIC.md](RUBRIC.md), [CHECKPOINTS.md](CHECKPOINTS.md), [SUBMISSION.md](SUBMISSION.md) và [RULES.md](RULES.md). Các vai A/B/C/D: A ; B, C, D thay bằng tên thành viên.
 
 ---
 
@@ -175,13 +175,13 @@ Mọi case có đủ `id`, `phase: "B"`, `suite`, `query` hoặc `turns`, `failu
 
 **Trước v0**
 - [ ] Tạo repo đúng tên, push `main`, thêm B/C/D làm collaborator.
-- [ ] Commit cài đặt ban đầu: `.gitignore` thêm `orders/`; copy artifact IT sang `artifacts/it_reference/`.
-- [ ] Chốt provider/model cho cả nhóm; chạy preflight. Nếu preflight lỗi vì câu thử VPN thì sửa câu thử trong `scripts/preflight_provider.py`.
-- [ ] Viết `sales_data/customers.json` (10 khách) và `sales_data/orders.json` (8 đơn) theo mục 1.3; thêm `sales_data/README.md` ghi rõ dữ liệu là giả.
-- [ ] Code `tools/lookup_customer/` (`tool.py` + `TOOL.md`), trả SĐT đã che, lỗi `customer_not_found` khi sai ID.
-- [ ] Gửi danh sách ID và đặc điểm dữ liệu (đơn nào trễ, khách nào bị khóa…) cho B và D để viết case.
-- [ ] Kiểm tra cuối trước v0: đếm case (20 + 10, 12), mọi tool trong case có trong `tools.yaml` và registry, không có expect mảng object.
-- [ ] **Commit chốt bộ case + artifact v0**; ghi hash commit vào đầu REPORT.
+- [x] Commit cài đặt ban đầu: `.gitignore` thêm `orders/`; copy artifact IT sang `artifacts/it_reference/`. *(File đã tạo/sửa xong — `.gitignore`, `starter_v0/.gitignore`, `starter_v0/artifacts/it_reference/`; chưa commit.)*
+- [x] Chốt provider/model cho cả nhóm; chạy preflight. Nếu preflight lỗi vì câu thử VPN thì sửa câu thử trong `scripts/preflight_provider.py`. *(Provider `gemini`, preflight OK; chưa cần sửa câu thử vì `tools.yaml` chưa đổi sang bản bán hàng.)*
+- [x] Viết `sales_data/customers.json` (10 khách) và `sales_data/orders.json` (8 đơn) theo mục 1.3; thêm `sales_data/README.md` ghi rõ dữ liệu là giả.
+- [x] Code `tools/lookup_customer/` (`tool.py` + `TOOL.md`), trả SĐT đã che, lỗi `customer_not_found` khi sai ID. *(Đã smoke test thủ công.)*
+- [x] Gửi danh sách ID và đặc điểm dữ liệu (đơn nào trễ, khách nào bị khóa…) cho B và D để viết case. *(Đã liệt kê trong hội thoại — cần B/D xác nhận đã nhận.)*
+- [ ] Kiểm tra cuối trước v0: đếm case (20 + 10, 12), mọi tool trong case có trong `tools.yaml` và registry, không có expect mảng object. *(Chờ `data/sales_base.json`, `data/sales_adversarial.json` từ B/D.)*
+- [ ] **Commit chốt bộ case + artifact v0**; ghi hash commit vào đầu REPORT. *(Chờ case + prompt/tools.yaml bản nháp bán hàng từ B/C.)*
 
 **v0 → v3**
 - [ ] Chạy v0 base và v0 adversarial; sau mỗi version (v1, v2, v3) chạy lại base; với v3 chạy thêm adversarial.

@@ -1,0 +1,17 @@
+{
+  "snapshot_at": "2026-09-14T09:00:00+07:00",
+  "source": "Fictional Northstar Electronics customer directory",
+  "notice": "All customers are synthetic lab data, not real people. Phone numbers are masked; no full address or card data is stored.",
+  "customers": [
+    {"customer_id": "CUS-3001", "name": "Nguyen Van An", "tier": "standard", "city": "TP. Ho Chi Minh", "phone_masked": "0901***567", "order_ids": ["ORD-2001"], "account_status": "active"},
+    {"customer_id": "CUS-3002", "name": "Tran Thi Bich", "tier": "vip", "city": "Ha Noi", "phone_masked": "0912***234", "order_ids": ["ORD-2002"], "account_status": "active"},
+    {"customer_id": "CUS-3003", "name": "Le Van Cuong", "tier": "standard", "city": "Da Nang", "phone_masked": "0933***789", "order_ids": ["ORD-2003", "ORD-2004"], "account_status": "active"},
+    {"customer_id": "CUS-3004", "name": "Pham Thi Dao", "tier": "standard", "city": "TP. Ho Chi Minh", "phone_masked": "0904***456", "order_ids": ["ORD-2005"], "account_status": "active"},
+    {"customer_id": "CUS-3005", "name": "Hoang Van Em", "tier": "vip", "city": "TP. Ho Chi Minh", "phone_masked": "0987***321", "order_ids": ["ORD-2006"], "account_status": "active"},
+    {"customer_id": "CUS-3006", "name": "Vu Thi Giang", "tier": "standard", "city": "Ha Noi", "phone_masked": "0977***654", "order_ids": ["ORD-2007"], "account_status": "active"},
+    {"customer_id": "CUS-3007", "name": "Do Van Hung", "tier": "standard", "city": "Da Nang", "phone_masked": "0944***987", "order_ids": ["ORD-2008"], "account_status": "active"},
+    {"customer_id": "CUS-3008", "name": "Bui Thi Kim", "tier": "standard", "city": "TP. Ho Chi Minh", "phone_masked": "0966***112", "order_ids": [], "account_status": "locked"},
+    {"customer_id": "CUS-3009", "name": "Ngo Van Long", "tier": "standard", "city": "Can Tho", "phone_masked": "0922***335", "order_ids": [], "account_status": "active"},
+    {"customer_id": "CUS-3010", "name": "Dang Thi My", "tier": "vip", "city": "Ha Noi", "phone_masked": "0988***778", "order_ids": [], "account_status": "active"}
+  ]
+}

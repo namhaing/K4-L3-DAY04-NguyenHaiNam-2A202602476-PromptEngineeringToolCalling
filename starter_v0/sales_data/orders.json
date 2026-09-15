@@ -1,0 +1,104 @@
+{
+  "snapshot_at": "2026-09-14T09:00:00+07:00",
+  "source": "Fictional Northstar Electronics order history",
+  "notice": "All orders are synthetic lab data, not real transactions. No card numbers, CVV or OTP are stored anywhere in this file.",
+  "orders": [
+    {
+      "order_id": "ORD-2001",
+      "customer_id": "CUS-3001",
+      "items": [
+        {"sku": "SKU-1001", "name": "Laptop Lenovo ThinkPad T14 Gen 4", "quantity": 1, "unit_price": 25990000}
+      ],
+      "total": 25990000,
+      "payment": {"method": "bank_transfer", "status": "paid"},
+      "shipping": {"carrier": "GHTK", "status": "in_transit", "eta": "2026-09-16", "city": "TP. Ho Chi Minh"},
+      "status": "processing",
+      "delivered_at": null
+    },
+    {
+      "order_id": "ORD-2002",
+      "customer_id": "CUS-3002",
+      "items": [
+        {"sku": "SKU-1004", "name": "Tai nghe chong on Sony WH-1000XM5", "quantity": 1, "unit_price": 7490000}
+      ],
+      "total": 7490000,
+      "payment": {"method": "credit_card", "status": "paid"},
+      "shipping": {"carrier": "J&T Express", "status": "delivered", "eta": "2026-09-10", "city": "Ha Noi"},
+      "status": "completed",
+      "delivered_at": "2026-09-10T14:00:00+07:00"
+    },
+    {
+      "order_id": "ORD-2003",
+      "customer_id": "CUS-3003",
+      "items": [
+        {"sku": "SKU-1003", "name": "Dien thoai Samsung Galaxy S24", "quantity": 1, "unit_price": 18990000}
+      ],
+      "total": 18990000,
+      "payment": {"method": "cod", "status": "paid"},
+      "shipping": {"carrier": "Viettel Post", "status": "delivered", "eta": "2026-09-08", "city": "Da Nang"},
+      "status": "completed",
+      "delivered_at": "2026-09-08T10:30:00+07:00"
+    },
+    {
+      "order_id": "ORD-2004",
+      "customer_id": "CUS-3003",
+      "items": [
+        {"sku": "SKU-1009", "name": "Dong ho thong minh Apple Watch Series 9 GPS 41mm", "quantity": 1, "unit_price": 10490000}
+      ],
+      "total": 10490000,
+      "payment": {"method": "bank_transfer", "status": "paid"},
+      "shipping": {"carrier": "GHTK", "status": "delayed", "eta": "2026-09-11", "city": "Da Nang"},
+      "status": "processing",
+      "delivered_at": null
+    },
+    {
+      "order_id": "ORD-2005",
+      "customer_id": "CUS-3004",
+      "items": [
+        {"sku": "SKU-1002", "name": "Laptop Apple MacBook Air 13 M3", "quantity": 1, "unit_price": 27490000}
+      ],
+      "total": 27490000,
+      "payment": {"method": "credit_card", "status": "failed"},
+      "shipping": {"carrier": "GHTK", "status": "on_hold", "eta": null, "city": "TP. Ho Chi Minh"},
+      "status": "payment_failed",
+      "delivered_at": null
+    },
+    {
+      "order_id": "ORD-2006",
+      "customer_id": "CUS-3005",
+      "items": [
+        {"sku": "SKU-1011", "name": "Laptop Dell Latitude 7440", "quantity": 1, "unit_price": 24990000},
+        {"sku": "SKU-1008", "name": "Sac nhanh Anker Nano 65W USB-C", "quantity": 1, "unit_price": 890000, "note": "backordered - het hang, chua xuat kho"}
+      ],
+      "total": 25880000,
+      "payment": {"method": "bank_transfer", "status": "paid"},
+      "shipping": {"carrier": "GHTK", "status": "partial", "eta": "2026-09-18", "city": "TP. Ho Chi Minh"},
+      "status": "partially_shipped",
+      "delivered_at": null
+    },
+    {
+      "order_id": "ORD-2007",
+      "customer_id": "CUS-3006",
+      "items": [
+        {"sku": "SKU-1010", "name": "Tai nghe Bluetooth JBL Tune 520BT", "quantity": 2, "unit_price": 1190000}
+      ],
+      "total": 2380000,
+      "payment": {"method": "momo", "status": "paid"},
+      "shipping": {"carrier": "J&T Express", "status": "delivered", "eta": "2026-09-12", "city": "Ha Noi"},
+      "status": "completed",
+      "delivered_at": "2026-09-12T09:15:00+07:00"
+    },
+    {
+      "order_id": "ORD-2008",
+      "customer_id": "CUS-3007",
+      "items": [
+        {"sku": "SKU-1005", "name": "May tinh bang Apple iPad Air 11 M2", "quantity": 1, "unit_price": 16990000}
+      ],
+      "total": 16990000,
+      "payment": {"method": "credit_card", "status": "paid"},
+      "shipping": {"carrier": "Viettel Post", "status": "delivered", "eta": "2026-08-25", "city": "Da Nang"},
+      "status": "completed",
+      "delivered_at": "2026-08-25T11:00:00+07:00"
+    }
+  ]
+}
