@@ -1,1 +1,3 @@
 version,author,changed_artifact,artifact_version,prompt_hash,tools_hash,reason,hypothesis,metric_name,metric_before,metric_after,run_file
+v0,Nam,baseline,v0+p687f7ac44016+tad5a9ca2cc51,687f7ac44016,ad5a9ca2cc51,baseline,Đo hành vi baseline của prompt/tools.yaml v0 cố ý đơn giản trên 30 case base trước khi sửa,case_accuracy,,0.7333,runs/v0_B_base_openai_20260915T205846387464.json
+v0,Nam,baseline,v0+p687f7ac44016+tad5a9ca2cc51,687f7ac44016,ad5a9ca2cc51,baseline,Đo ranh giới an toàn baseline của v0 trên 12 case adversarial trước khi sửa,case_accuracy_adversarial,,0.5,runs/v0_B_adversarial_openai_20260916T004414884638.json
