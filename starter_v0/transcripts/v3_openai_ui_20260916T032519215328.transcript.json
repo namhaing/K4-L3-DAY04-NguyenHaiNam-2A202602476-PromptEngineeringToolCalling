@@ -1,0 +1,87 @@
+{
+  "transcript_id": "v3_openai_ui_20260916T032519215328",
+  "version": "v3",
+  "artifact_version": "v3+p5d19a7970430+tcfd2e7454139",
+  "prompt_hash": "5d19a797043000b1794af8e7c7547df56984a7f8a724b9b046e210720c7c5512",
+  "tools_hash": "cfd2e745413992c971598378ad15f4962bbaa9aecb93b1a6d3e536d3412dd3a8",
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "interface": "streamlit_ui",
+  "system_prompt": "artifacts\\system_prompt.md",
+  "tools": "artifacts\\tools.yaml",
+  "history_window": 5,
+  "max_tool_rounds": 4,
+  "created_at": "2026-09-16T03:25:19",
+  "updated_at": "2026-09-16T03:25:40",
+  "turns": [
+    {
+      "turn_index": 1,
+      "started_at": "2026-09-16T03:25:35",
+      "user": "Còn SKU-1003 ở kho Đà Nẵng không?",
+      "status": "answered",
+      "assistant_text": "SKU-1003, which is the Samsung Galaxy S24, is currently in stock at the Đà Nẵng warehouse with a quantity of 5 available. If you need further assistance or want to place an order, just let me know!",
+      "rounds": [
+        {
+          "round": 1,
+          "assistant_text": null,
+          "tool_calls": [
+            {
+              "name": "check_stock",
+              "args": {
+                "sku": "SKU-1003",
+                "warehouse": "danang"
+              }
+            }
+          ],
+          "tool_results": [
+            {
+              "tool": "check_stock",
+              "args": {
+                "sku": "SKU-1003",
+                "warehouse": "danang"
+              },
+              "result": {
+                "tool": "check_stock",
+                "sku": "SKU-1003",
+                "name": "Samsung Galaxy S24",
+                "warehouse": "danang",
+                "warehouse_name": "Kho Đà Nẵng",
+                "qty": 5,
+                "status": "in_stock",
+                "restock_date": null,
+                "checked_at": "2026-09-14T09:00:00+07:00"
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "assistant_text": "SKU-1003, which is the Samsung Galaxy S24, is currently in stock at the Đà Nẵng warehouse with a quantity of 5 available. If you need further assistance or want to place an order, just let me know!",
+          "tool_calls": [],
+          "tool_results": []
+        }
+      ],
+      "tool_events": [
+        {
+          "tool": "check_stock",
+          "args": {
+            "sku": "SKU-1003",
+            "warehouse": "danang"
+          },
+          "result": {
+            "tool": "check_stock",
+            "sku": "SKU-1003",
+            "name": "Samsung Galaxy S24",
+            "warehouse": "danang",
+            "warehouse_name": "Kho Đà Nẵng",
+            "qty": 5,
+            "status": "in_stock",
+            "restock_date": null,
+            "checked_at": "2026-09-14T09:00:00+07:00"
+          }
+        }
+      ],
+      "ended_at": "2026-09-16T03:25:40"
+    }
+  ]
+}
