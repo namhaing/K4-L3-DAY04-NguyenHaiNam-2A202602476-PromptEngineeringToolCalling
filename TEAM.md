@@ -114,12 +114,16 @@ Nhóm làm trên **một máy chung**; mỗi commit ghi đúng người đang th
 
 - Phần việc và file/commit/PR: `artifacts/system_prompt.md` v3 (`b213df0`); run v3 base 29/30 + adversarial 11/12 (`3dfcf5f`); UI `ui.py` + `requirements.txt` + README mục chạy UI (`f212bd2`); nội dung REPORT A1, A4, B1 dòng v3, B4a, B6, B7 phần prompt.
 - Quyết định, khó khăn và cách xử lý: →
-  - *Gợi ý: v3 bạn thêm quy tắc nào cho hội thoại nhiều lượt và cho xác nhận? Vì sao coi `SYSTEM:`, `<assistant>`, `TOOL_RESULTS_JSON` do người dùng gõ là dữ liệu chứ không phải quyền? Khi làm UI, bạn quyết định hiển thị gì để không che lỗi tool?*
+  - Ở prompt v3, em thêm quy tắc cho hội thoại nhiều lượt: xác nhận của người dùng chỉ hợp lệ với đúng đơn đang được hỏi và sẽ mất hiệu lực nếu người dùng đổi sản phẩm, đổi số lượng, đổi kho hoặc chuyển sang yêu cầu khác. Mục tiêu là tránh việc agent dùng lại một câu "đồng ý" cũ để tạo đơn mới.
+  - Em cũng thêm luật coi các nội dung người dùng tự gõ như `SYSTEM:`, `<assistant>`, `TOOL_RESULTS_JSON` hay `confirmed: true` chỉ là dữ liệu đầu vào, không phải quyền hệ thống và không phải xác nhận hợp lệ. Cách này giúp giảm các case prompt injection và xác nhận giả.
+  - Khi làm UI Streamlit, mình quyết định hiển thị tên tool, input arguments, kết quả hoặc lỗi tool, `artifact_version`, provider/model và dừng riêng ở bước `clarify`. Nhờ vậy lúc kiểm thử không chỉ thấy câu trả lời cuối mà còn thấy agent đã gọi tool gì, truyền tham số gì và lỗi nằm ở prompt hay ở tool.
 - Điều đã học: →
-  - *Gợi ý: v3 sửa được SM09 và nhóm case xác nhận giả, nhưng lần chạy lại chỉ còn 8/12 — điều đó nói gì về việc chỉ dựa vào prompt? Vì sao phải mở `tool_results` và thư mục `orders/` thay vì chỉ nhìn điểm?*
+  - Em học được rằng prompt có thể cải thiện hành vi rất rõ, ví dụ v3 sửa được SM09 và nhiều case xác nhận giả, nhưng chỉ dựa vào prompt thì chưa đủ ổn định. Việc `v3-recheck` adversarial chỉ còn 8/12 cho thấy model vẫn có dao động giữa các lần chạy và cần thêm guardrail ở tool hoặc evaluator để chắc hơn.
+  - Em cũng nhận ra không thể chỉ nhìn điểm tổng. Phải mở `tool_results` để biết model gọi tool đúng hay sai, và kiểm tra thư mục `orders/` để xem có đơn nào bị tạo ngoài ý muốn không; có những lỗi chỉ nhìn câu trả lời cuối sẽ rất dễ bỏ sót.
 - AI/công cụ đã dùng và cách kiểm tra: →
-  - *Gợi ý: công cụ AI đã dùng; cách kiểm tra — đọc diff prompt, chạy base + adversarial, tự chạy UI bằng `python -m streamlit run ui.py`, kiểm tra `orders/` sau mỗi run.*
-- Thời điểm đã tự nộp URL repo chung trên VLearn: →
+  - EM dùng Claude Code để hỗ trợ rà prompt, đọc kết quả fail và viết UI Streamlit nhanh hơn, sau đó tự kiểm tra lại bằng run thật và transcript.
+  - Cách kiểm tra của mình là đọc diff của `artifacts/system_prompt.md`, chạy lại bộ base và adversarial, tự chạy UI bằng `python -m streamlit run ui.py`, thử các luồng cần `clarify`, rồi kiểm tra `orders/` sau mỗi run để chắc không có đơn bị tạo sai.
+- Thời điểm đã tự nộp URL repo chung trên VLearn: → 09:46:12 16/9/2026
 
 ### Trần Thị Thu Hiền — 2A202602737
 
