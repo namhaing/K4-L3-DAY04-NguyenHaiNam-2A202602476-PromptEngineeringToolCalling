@@ -92,18 +92,23 @@ Nhóm làm trên **một máy chung**; mỗi commit ghi đúng người đang th
 - AI/công cụ đã dùng và cách kiểm tra: →
   - Mình dùng Claude Code để hỗ trợ đọc diff, viết/soát prompt, tool và báo cáo; các quyết định cuối vẫn tự kiểm tra lại bằng file và kết quả chạy.
   - Cách kiểm tra của mình là đọc `git diff` trước khi commit, chạy `python scripts/smoke_tools.py`, đối chiếu `tool_results` trong các file run JSON, mở thư mục `orders/` để xem có đơn nào bị tạo sai không, và so lại artifact với commit tương ứng trong `version_log.csv`.
-- Thời điểm đã tự nộp URL repo chung trên VLearn: →
+- Thời điểm đã tự nộp URL repo chung trên VLearn: → 09:48:14 16/9/2026
 
 ### Bùi Phương Duy — 2A202602684
 
 - Phần việc và file/commit/PR: `artifacts/tools.yaml` v2 + run v2 base 29/30 (`runs/v2_B_base_openai_20260916T022444924297.json`) + dòng v2 trong `version_log.csv` — commit `8d13991`; nội dung dòng v2 trong REPORT B1; 5 case nhóm một lượt `G_S01`–`G_S05` (`ff22ad5`); kiểm tra cuối trước khi nộp.
 - Quyết định, khó khăn và cách xử lý: →
-  - *Gợi ý: vì sao v2 chỉ sửa phần `description` mà không đổi tên tool/tham số? Bạn chọn mô tả thêm gì cho `view`, `warehouse` và định dạng ID để sửa S04, S05, S11, S19? Khi viết 5 case một lượt, bạn tránh trùng với các case đã chốt bằng cách nào?*
+  - Ở v2 chỉ sửa phần `description` trong `tools.yaml`, không đổi tên tool hay tham số, vì muốn giữ nguyên interface để các tool, script chấm và case đã chốt không bị vỡ. Cách này giúp đo riêng tác động của mô tả tool lên hành vi model.
+  - Bổ sung mô tả rõ hơn cho `view`, `warehouse`, định dạng ID và ý nghĩa các enum để model bớt gọi sai tham số ở các case như S04, S05, S11, S19. Ví dụ `view` cần phân biệt xem tổng quan hay chi tiết, `warehouse` phải dùng đúng mã kho, còn ID không được tự bịa hoặc chép mẫu khi người dùng chưa cung cấp.
+  - Khi viết 5 case nhóm một lượt `G_S01`–`G_S05`, Đọc lại bộ case đã chốt trước đó rồi chọn các tình huống khác góc kiểm tra: chính sách bảo mật dữ liệu, xử lý đơn, hóa đơn nháp, ngày hàng về và tình huống song song giữa lỗi thanh toán với chính sách payment. Nhờ vậy case mới không chỉ lặp lại các câu hỏi tồn kho/tạo đơn cơ bản.
 - Điều đã học: →
-  - *Gợi ý: mô tả tool ảnh hưởng tới hành vi model ra sao (base 25/30 → 29/30)? Tác dụng phụ khi ghi mẫu `ORD-####` trong mô tả (model chép nguyên mẫu vào tham số) cho bạn bài học gì?*
+  - Bản thân học được rằng mô tả tool ảnh hưởng rất mạnh tới cách model chọn tool và điền tham số. Chỉ sửa description nhưng điểm base tăng từ 25/30 lên 29/30, nên schema không chỉ là tài liệu cho người đọc mà là một phần của prompt điều khiển agent.
+  - Em cũng thấy nếu mô tả ghi mẫu như `ORD-####` không cẩn thận thì model có thể chép nguyên mẫu đó vào tham số thật. Bài học là khi viết ví dụ trong tool description phải nói rõ đó là format minh họa, không phải giá trị hợp lệ để dùng trực tiếp.
 - AI/công cụ đã dùng và cách kiểm tra: →
-  - *Gợi ý: công cụ AI đã dùng và cách bạn tự kiểm tra — đọc `git diff` của `tools.yaml`, chạy smoke test, đối chiếu từng case FAIL trong run v1 với run v2.*
-- Thời điểm đã tự nộp URL repo chung trên VLearn: →
+  - Em dùng Claude Code để hỗ trợ đọc lỗi, gợi ý cách diễn đạt description và rà lại case, nhưng tự kiểm tra bằng kết quả chạy và diff trước khi commit.
+  - Cách kiểm tra của mình là đọc `git diff` của `artifacts/tools.yaml`, chạy `python scripts/smoke_tools.py`, sau đó đối chiếu từng case FAIL ở run v1 với run v2 để xem lỗi nào được sửa và lỗi nào còn giữ nguyên.
+- Thời điểm đã tự nộp URL repo chung trên VLearn: → 09:48:32 16/9/2026
+
 
 ### Nguyễn Trần Bảo Tâm — 2A202602408
 
