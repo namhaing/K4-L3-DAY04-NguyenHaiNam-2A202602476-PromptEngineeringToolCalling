@@ -129,9 +129,13 @@ Nhóm làm trên **một máy chung**; mỗi commit ghi đúng người đang th
 
 - Phần việc và file/commit/PR: 5 case nhóm nhiều lượt `G_M01`–`G_M05` trong `data/eval_group.json` + nới validator `scripts/smoke_tools.py` cho lượt `assistant` (`83c98ed`); run group v3 10/10 (`97bb2f2`); 4 transcript UI (`db4ce31`); nội dung REPORT A3, B3, B4.
 - Quyết định, khó khăn và cách xử lý: →
-  - *Gợi ý: bạn chọn 5 kịch bản nào và vì sao (xác nhận hợp lệ để tạo đơn, khách bị khóa, đổi kho khi hết hàng, chính sách bảo hành, tìm web hợp lệ)? Vì sao phải cho phép lượt `assistant` trong `turns`? Khi tạo 4 transcript, bạn dựng tình huống thiếu thông tin và sửa mã đơn thế nào?*
+  - Mình chọn 5 kịch bản nhiều lượt để kiểm tra các tình huống gần với lúc dùng thật: xác nhận hợp lệ rồi tạo đơn, khách bị khóa nên không được tạo đơn, đổi kho khi kho ban đầu hết hàng, hỏi chính sách bảo hành và tìm web hợp lệ. Các case này giúp kiểm tra agent có giữ đúng ngữ cảnh qua nhiều lượt hay chỉ xử lý từng câu riêng lẻ.
+  - Khi viết `data/eval_group.json`, mình phải nới validator trong `scripts/smoke_tools.py` để cho phép lượt `assistant` trong `turns`, vì hội thoại nhiều lượt cần mô phỏng cả câu hỏi lại hoặc phản hồi trung gian của agent. Nếu chỉ có lượt user thì khó kiểm tra các tình huống thiếu thông tin và xác nhận sau đó.
+  - Khi tạo 4 transcript UI, mình dựng các tình huống có lỗi hoặc thiếu dữ liệu như hỏi tồn kho, thiếu thông tin rồi bổ sung, nhập sai mã đơn rồi sửa lại, và tạo đơn sau khi xác nhận. Mục tiêu là xem agent có hỏi lại hợp lý, có dùng đúng mã mới sau khi người dùng sửa, và có tạo đơn đúng thời điểm không.
 - Điều đã học: →
-  - *Gợi ý: bộ case tự viết đạt 10/10 nhưng bộ chốt vẫn còn case FAIL — điều đó nói gì về việc tự viết case sau khi đã biết prompt? Trong transcript, agent hỏi lại bằng lời thay vì gọi `clarify`: bạn nghĩ sao về khoảng cách giữa điểm eval và hành vi thật?*
+  - Mình đã học được rằng bộ case tự viết đạt 10/10 chưa có nghĩa là agent đã ổn hoàn toàn, vì khi đã biết prompt và luồng xử lý thì case tự viết dễ vô tình khớp với điểm mạnh của hệ thống. Bộ case chốt vẫn còn FAIL nên cần dùng nhiều nguồn test khác nhau, nhất là adversarial và case người khác viết.
+  - Trong transcript, có lúc agent hỏi lại bằng lời thay vì gọi đúng tool `clarify`. Điều này cho thấy điểm eval và trải nghiệm thật có khoảng cách: một câu trả lời có thể nghe ổn với người dùng, nhưng nếu không đi qua tool đúng quy ước thì vẫn là lỗi về thiết kế agent và khó chấm tự động.
 - AI/công cụ đã dùng và cách kiểm tra: →
-  - *Gợi ý: công cụ AI đã dùng; cách kiểm tra — chạy `python scripts/smoke_tools.py --cases data/eval_group.json`, đối chiếu ID trong case với `data/sales_data/`, đọc lại 4 transcript xem có lộ dữ liệu nhạy cảm không.*
-- Thời điểm đã tự nộp URL repo chung trên VLearn: →
+  - Mình dùng Claude Code để hỗ trợ rà case nhiều lượt, sửa validator và xem lại transcript UI, nhưng tự kiểm tra bằng cách chạy test và đọc kết quả từng case.
+  - Cách kiểm tra của mình là chạy `python scripts/smoke_tools.py --cases data/eval_group.json`, đối chiếu các mã khách hàng, sản phẩm, đơn hàng và kho với dữ liệu trong `data/sales_data/`, sau đó đọc lại 4 transcript để chắc không lộ dữ liệu nhạy cảm và không có đơn nào bị tạo sai luồng.
+- Thời điểm đã tự nộp URL repo chung trên VLearn: →  10:03:27 16/9/2026
